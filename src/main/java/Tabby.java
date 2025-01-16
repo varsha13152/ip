@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  * A class representing the chatbot Tabby.
  */
@@ -11,6 +13,34 @@ public class Tabby {
      */
     private String greeting() {
         return String.format("Hello! I'm %s.\nWhat can I do for you?", CHATBOT);
+    }
+
+    /**
+     * Reads user input until the user types "bye".
+     *
+     * @return A goodbye message.
+     */
+    public String readUserInput() {
+        Scanner sc = new Scanner(System.in); // Create Scanner
+        while (true) {
+            String userInput = sc.nextLine();
+            if (userInput.equals("bye")) {
+                break; // Exit loop when user types "bye"
+            } else {
+                echo(userInput); // Echo the user's input
+            }
+        }
+        sc.close(); // Close Scanner after loop
+        return goodbye(); // Return goodbye message
+    }
+
+    /**
+     * Prints the user's input with a prefix.
+     *
+     * @param userInput The user's input string.
+     */
+    private void echo(String userInput) {
+        System.out.println(userInput); // Print echoed input
     }
 
     /**
@@ -31,8 +61,7 @@ public class Tabby {
         // Print the greeting message
         System.out.println(tabby.greeting());
 
-        // Print goodbye message
-        System.out.println(tabby.goodbye());
+        // Read and respond to user input
+        System.out.println(tabby.readUserInput());
     }
 }
-
