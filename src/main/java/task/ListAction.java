@@ -1,5 +1,5 @@
-package action;
-import task.TaskManager;
+package task;
+
 /**
  * Represents the Action on a List
  */

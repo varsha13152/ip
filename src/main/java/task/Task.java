@@ -3,7 +3,7 @@ package task;
 /**
  * A class representing a Task.
  */
-public abstract class Task {
+public class Task {
     protected String description;
     protected boolean isDone;
 
@@ -16,7 +16,6 @@ public abstract class Task {
         this.description = description;
         this.isDone = false;
     }
-
 
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X

@@ -1,5 +1,5 @@
-package action;
-import task.TaskManager;
+package task;
+
 /**
  * An action that marks a task as done.
  */

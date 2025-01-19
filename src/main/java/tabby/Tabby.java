@@ -2,7 +2,7 @@ package tabby;
 
 import java.util.Scanner;
 import task.TaskManager;
-import action.Action;
+import task.Action;
 
 /**
  * A class representing a chatbot.
