@@ -14,8 +14,14 @@ public class TaskManager {
      */
     public void addTask(Task task) {
         taskList.add(task);
-        System.out.println(String.format("Got it. I've added this task:" +
-                "\n %s\nNow you have %d tasks in the list",task,taskList.size()));
+        int taskNumber = taskList.size();
+        if (taskNumber == 1) {
+            System.out.println(String.format("Got it. I've added this task:" +
+                    "\n %s\nNow you have 1 task in the list",task));
+        } else {
+            System.out.println(String.format("Got it. I've added this task:" +
+                    "\n %s\nNow you have %d tasks in the list", task, taskNumber));
+        }
     }
 
     /**
