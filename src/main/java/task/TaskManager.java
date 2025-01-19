@@ -10,13 +10,12 @@ public class TaskManager {
 
     /**
      * Adds a new task to the task list.
-     * @param description The task description.
+     * @param task The task to be added
      */
-    public void addTask(String description) {
-        Task task = new Task(description);
+    public void addTask(Task task) {
         taskList.add(task);
-
-        System.out.println("Added: " + description);
+        System.out.println(String.format("Got it. I've added this task:" +
+                "\n %s\nNow you have %d tasks in the list",task,taskList.size()));
     }
 
     /**
