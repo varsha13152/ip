@@ -5,6 +5,7 @@ package task;
  */
 public class Task {
     protected String description;
+    protected boolean isDone;
 
     /**
      * Constructs a new Task with the given description.
@@ -13,6 +14,19 @@ public class Task {
      */
     public Task(String description) {
         this.description = description;
+        this.isDone = false;
+    }
+
+    public String getStatusIcon() {
+        return (isDone ? "X" : " "); // mark done task with X
+    }
+
+    public void markAsDone() {
+        this.isDone = true;
+    }
+
+    public void markAsNotDone() {
+        this.isDone = false;
     }
 
     /**
@@ -22,6 +36,6 @@ public class Task {
      */
     @Override
     public String toString() {
-        return this.description;
+        return String.format("[%s] %s", getStatusIcon(),this.description);
     }
 }
