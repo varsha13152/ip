@@ -37,13 +37,9 @@ public abstract class Action {
             return null;
         }
 
-        int taskNumber;
-        try {
-            taskNumber = Integer.parseInt(tokens[1]) - 1;  // Convert to zero-based index
-        } catch (NumberFormatException e) {
-            return null;
-        }
 
+
+        int taskNumber = Integer.parseInt(tokens[1]) - 1;  // Convert to zero-based index
         if (taskAction.equalsIgnoreCase("mark")) {
             return new MarkAction(taskNumber);
         } else if (taskAction.equalsIgnoreCase("unmark")) {
