@@ -47,8 +47,7 @@ public class TaskManager {
         if (taskNumber >= 0 && taskNumber < taskList.size()) {
             Task task = taskList.get(taskNumber);
             task.markAsDone();
-            System.out.println("Nice! I've marked this task as done:");
-            System.out.println(task);
+            System.out.println(String.format("Nice! I've marked this task as done:\n %s",task));
         } else {
             System.out.println("Invalid task number.");
         }
@@ -62,8 +61,7 @@ public class TaskManager {
         if (taskNumber >= 0 && taskNumber < taskList.size()) {
             Task task = taskList.get(taskNumber);
             task.markAsNotDone();
-            System.out.println("OK, I've marked this task as not done yet:");
-            System.out.println(task);
+            System.out.println(String.format("OK, I've marked this task as not done yet:\n %s",task));
         } else {
             System.out.println("Invalid task number.");
         }
