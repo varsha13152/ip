@@ -19,11 +19,10 @@ public abstract class Action {
      */
     public static Action parseUserInput(String userInput) throws TabbyExceptionInvalidCommand,
             TabbyExceptionInvalidMark, TabbyExceptionInvalidTaskNumber {
-        userInput = userInput.trim();
-
-        if (userInput == null || userInput.isEmpty()) {
+        if (userInput == null || userInput.trim().isEmpty()) {
             throw new TabbyExceptionInvalidCommand();
         }
+        userInput = userInput.trim();
         String[] tokens = userInput.split(" ", 2);
         String taskAction = tokens[0].toLowerCase();
 
@@ -33,17 +32,25 @@ public abstract class Action {
             case "todo":
             case "deadline":
             case "event":
+                if (tokens.length < 2) {
+                    throw new TabbyExceptionInvalidCommand();
+                }
                 return new AddAction(userInput);
             case "mark":
             case "unmark":
+            case "remove":
                 if (tokens.length < 2) {
                     throw new TabbyExceptionInvalidMark();
                 }
                 try {
                     int taskNumber = Integer.parseInt(tokens[1]) - 1;
-                    return taskAction.equals("mark") ?
-                            new MarkAction(taskNumber) :
-                            new UnmarkAction(taskNumber);
+                    if (taskAction.equals("mark")) {
+                        return new MarkAction(taskNumber);
+                    } else if (taskAction.equals("unmark")) {
+                        return new UnmarkAction(taskNumber);
+                    } else {
+                        return new DeleteAction(taskNumber);
+                    }
                 } catch (NumberFormatException e) {
                     throw new TabbyExceptionInvalidTaskNumber();
                 }
@@ -51,6 +58,7 @@ public abstract class Action {
                 throw new TabbyExceptionInvalidCommand();
         }
     }
+
 
     /**
      * Runs the action with the provided task manager.

@@ -14,13 +14,26 @@ public class TaskManager {
      */
     public void addTask(Task task) {
         taskList.add(task);
-        int taskNumber = taskList.size();
-        if (taskNumber == 1) {
+        int noOfTasks = taskList.size();
+        if (noOfTasks == 1) {
             System.out.println(String.format("Got it. I've added this task:" +
                     "\n %s\nNow you have 1 task in the list",task));
         } else {
             System.out.println(String.format("Got it. I've added this task:" +
-                    "\n %s\nNow you have %d tasks in the list", task, taskNumber));
+                    "\n %s\nNow you have %d tasks in the list", task, noOfTasks));
+        }
+    }
+
+    public void deleteTask(int taskNumber) {
+        Task task = taskList.get(taskNumber);
+        taskList.remove(taskNumber);
+        int noOfTasks = taskList.size();
+        if (noOfTasks == 1) {
+            System.out.println(String.format("Got it. I've removed this task:" +
+                    "\n %s\nNow you have 1 task in the list",task));
+        } else {
+            System.out.println(String.format("Got it. I've removed this task:" +
+                    "\n %s\nNow you have %d tasks in the list", task, noOfTasks));
         }
     }
 
