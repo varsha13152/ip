@@ -38,7 +38,11 @@ public abstract class Action {
                 return new AddAction(userInput);
             case "mark":
             case "unmark":
+<<<<<<< HEAD
             case "delete":
+=======
+            case "remove":
+>>>>>>> origin/master
                 if (tokens.length < 2) {
                     throw new TabbyExceptionInvalidMark();
                 }
