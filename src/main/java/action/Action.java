@@ -7,7 +7,15 @@ import task.TaskManager;
  * Abstract class representing an action that can be performed.
  */
 public abstract class Action {
-
+    private enum Command {
+        LIST,
+        MARK,
+        UNMARK,
+        DELETE,
+        TODO,
+        DEADLINE,
+        EVENT
+    }
     /**
      * Parses the user input and returns the appropriate Action object.
      *
@@ -24,38 +32,37 @@ public abstract class Action {
         }
         userInput = userInput.trim();
         String[] tokens = userInput.split(" ", 2);
-        String taskAction = tokens[0].toLowerCase();
+        String taskAction = tokens[0].toUpperCase();
 
-        switch (taskAction) {
-            case "list":
-                return new ListAction();
-            case "todo":
-            case "deadline":
-            case "event":
-                if (tokens.length < 2) {
-                    throw new TabbyExceptionInvalidCommand();
-                }
-                return new AddAction(userInput);
-            case "mark":
-            case "unmark":
-            case "delete":
-                if (tokens.length < 2) {
-                    throw new TabbyExceptionInvalidInput();
-                }
-                try {
-                    int taskNumber = Integer.parseInt(tokens[1]) - 1;
-                    if (taskAction.equals("mark")) {
-                        return new MarkAction(taskNumber);
-                    } else if (taskAction.equals("unmark")) {
-                        return new UnmarkAction(taskNumber);
-                    } else {
-                        return new DeleteAction(taskNumber);
+        try {
+             Command command = Command.valueOf(taskAction);
+            switch (command) {
+                case LIST:
+                    return new ListAction();
+                case TODO:
+                case DEADLINE:
+                case EVENT:
+                    return new AddAction(userInput);
+                case MARK:
+                case UNMARK:
+                case DELETE:
+                    try {
+                        int taskNumber = Integer.parseInt(tokens[1]) - 1;
+                        if (command == Command.MARK) {
+                            return new MarkAction(taskNumber);
+                        } else if (command == Command.UNMARK) {
+                            return new UnmarkAction(taskNumber);
+                        } else {
+                            return new DeleteAction(taskNumber);
+                        }
+                    } catch (NumberFormatException e) {
+                        throw new TabbyExceptionInvalidTaskNumber();
                     }
-                } catch (NumberFormatException e) {
-                    throw new TabbyExceptionInvalidTaskNumber();
-                }
-            default:
-                throw new TabbyExceptionInvalidCommand();
+                default:
+                    throw new TabbyExceptionInvalidCommand();
+            }
+        } catch(IllegalArgumentException e) {
+            throw new TabbyExceptionInvalidCommand();
         }
     }
 

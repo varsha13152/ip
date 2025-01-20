@@ -21,6 +21,13 @@ public class AddAction extends Action {
 
     private final String userInput;
 
+    private enum Command {
+        TODO,
+        DEADLINE,
+        EVENT
+    }
+
+
     /**
      * Constructs an AddAction with the specified user input.
      *
@@ -48,18 +55,19 @@ public class AddAction extends Action {
             throw new TabbyExceptionIncompleteCommand();
         }
 
-        String taskType = userInputTokens[0].trim().toLowerCase();
+        String taskType = userInputTokens[0].trim().toUpperCase();
+        Command command = Command.valueOf(taskType);
         String taskDescription = userInputTokens[1].trim();
 
         try {
-            switch (taskType) {
-                case "todo":
+            switch (command) {
+                case TODO:
                     addTodoTask(taskManager, taskDescription);
                     break;
-                case "deadline":
+                case DEADLINE:
                     addDeadlineTask(taskManager, taskDescription);
                     break;
-                case "event":
+                case EVENT:
                     addEventTask(taskManager, taskDescription);
                     break;
                 default:
