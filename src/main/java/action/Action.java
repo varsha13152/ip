@@ -14,11 +14,11 @@ public abstract class Action {
      * @param userInput The user's input string.
      * @return An Action object representing the parsed command.
      * @throws TabbyExceptionInvalidCommand If the command is invalid.
-     * @throws TabbyExceptionInvalidMark If the mark command is invalid.
+     * @throws TabbyExceptionInvalidInput If the mark command is invalid.
      * @throws TabbyExceptionInvalidTaskNumber If the task number is not a valid integer.
      */
     public static Action parseUserInput(String userInput) throws TabbyExceptionInvalidCommand,
-            TabbyExceptionInvalidMark, TabbyExceptionInvalidTaskNumber {
+            TabbyExceptionInvalidInput, TabbyExceptionInvalidTaskNumber {
         if (userInput == null || userInput.trim().isEmpty()) {
             throw new TabbyExceptionInvalidCommand();
         }
@@ -38,13 +38,9 @@ public abstract class Action {
                 return new AddAction(userInput);
             case "mark":
             case "unmark":
-<<<<<<< HEAD
             case "delete":
-=======
-            case "remove":
->>>>>>> origin/master
                 if (tokens.length < 2) {
-                    throw new TabbyExceptionInvalidMark();
+                    throw new TabbyExceptionInvalidInput();
                 }
                 try {
                     int taskNumber = Integer.parseInt(tokens[1]) - 1;
