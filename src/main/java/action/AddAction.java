@@ -1,8 +1,14 @@
 package action;
+
 import task.TaskManager;
 import task.ToDo;
 import task.Event;
 import task.Deadline;
+import exceptions.TabbyExceptionInvalidDeadlineInput;
+import exceptions.TabbyExceptionInvalidEventInput;
+import exceptions.TabbyExceptionInvalidTodo;
+import exceptions.TabbyExceptionInvalidCommand;
+import exceptions.TabbyExceptionIncompleteCommand;
 
 /**
  * Handles adding new tasks to the task list.
@@ -21,53 +27,100 @@ public class AddAction extends Action {
      * @param userInput The task input string to be processed.
      */
     public AddAction(String userInput) {
-        this.userInput = userInput;
+        this.userInput = userInput.trim();
     }
 
     /**
      * Executes the action to add a task to the list.
      *
      * @param taskManager The TaskManager to operate on.
-     * @return A message indicating the task has been added.
+     * @throws TabbyExceptionInvalidCommand if the input format is incorrect.
+     * @throws TabbyExceptionIncompleteCommand if the command lacks necessary details.
      */
     @Override
-    public void runTask(TaskManager taskManager) {
-        String[] userInputTokens = userInput.split(" ", 2);
-
-        if (userInputTokens.length < 2) {
-            throw new IllegalArgumentException("Invalid input format. Expected: <taskType> <description>");
+    public void runTask(TaskManager taskManager) throws TabbyExceptionInvalidCommand, TabbyExceptionIncompleteCommand {
+        if (userInput.isEmpty()) {
+            throw new TabbyExceptionInvalidCommand();
         }
 
-        String taskType = userInputTokens[0].trim();
+        String[] userInputTokens = userInput.split(" ", 2);
+        if (userInputTokens.length < 2 || userInputTokens[1].trim().isEmpty()) {
+            throw new TabbyExceptionIncompleteCommand();
+        }
+
+        String taskType = userInputTokens[0].trim().toLowerCase();
         String taskDescription = userInputTokens[1].trim();
 
-        switch (taskType) {
-            case "todo":
-                addTodoTask(taskManager, taskDescription);
-                break;
-            case "deadline":
-                addDeadlineTask(taskManager, taskDescription);
-                break;
-            case "event":
-                addEventTask(taskManager, taskDescription);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid task type: " + taskType);
+        try {
+            switch (taskType) {
+                case "todo":
+                    addTodoTask(taskManager, taskDescription);
+                    break;
+                case "deadline":
+                    addDeadlineTask(taskManager, taskDescription);
+                    break;
+                case "event":
+                    addEventTask(taskManager, taskDescription);
+                    break;
+                default:
+                    throw new TabbyExceptionInvalidCommand();
+            }
+        } catch (TabbyExceptionInvalidTodo | TabbyExceptionInvalidDeadlineInput | TabbyExceptionInvalidEventInput e) {
+            System.err.println(e.getMessage());
         }
     }
 
-    private void addTodoTask(TaskManager taskManager, String description) {
-        taskManager.addTask(new ToDo(description.trim()));
+    /**
+     * Adds a ToDo task to the TaskManager.
+     *
+     * @param taskManager The TaskManager to add the task to.
+     * @param description The description of the ToDo task.
+     * @throws TabbyExceptionInvalidTodo if the description is empty.
+     */
+    private void addTodoTask(TaskManager taskManager, String description) throws TabbyExceptionInvalidTodo {
+        if (description.isEmpty()) {
+            throw new TabbyExceptionInvalidTodo();
+        }
+        taskManager.addTask(new ToDo(description));
     }
 
-    private void addDeadlineTask(TaskManager taskManager, String description) {
+    /**
+     * Adds a Deadline task to the TaskManager.
+     *
+     * @param taskManager The TaskManager to add the task to.
+     * @param description The description of the Deadline task.
+     * @throws TabbyExceptionInvalidDeadlineInput if the description is invalid.
+     */
+    private void addDeadlineTask(TaskManager taskManager, String description) throws TabbyExceptionInvalidDeadlineInput {
         String[] tokens = description.split(DEADLINE_DELIMITER, 2);
+        if (tokens.length < 2 || tokens[0].trim().isEmpty() || tokens[1].trim().isEmpty()) {
+            throw new TabbyExceptionInvalidDeadlineInput();
+        }
         taskManager.addTask(new Deadline(tokens[0].trim(), tokens[1].trim()));
     }
 
-    private void addEventTask(TaskManager taskManager, String description) {
+    /**
+     * Adds an Event task to the TaskManager.
+     *
+     * @param taskManager The TaskManager to add the task to.
+     * @param description The description of the Event task.
+     * @throws TabbyExceptionInvalidEventInput if the description is incomplete or incorrect.
+     */
+    private void addEventTask(TaskManager taskManager, String description) throws TabbyExceptionInvalidEventInput {
+        if (!description.contains(EVENT_FROM_DELIMITER) || !description.contains(EVENT_TO_DELIMITER)) {
+            throw new TabbyExceptionInvalidEventInput();
+        }
+
         String[] firstSplit = description.split(EVENT_FROM_DELIMITER, 2);
+        if (firstSplit.length < 2 || firstSplit[0].trim().isEmpty()) {
+            throw new TabbyExceptionInvalidEventInput();
+        }
+
         String[] secondSplit = firstSplit[1].split(EVENT_TO_DELIMITER, 2);
+        if (secondSplit.length < 2 || secondSplit[0].trim().isEmpty() || secondSplit[1].trim().isEmpty()) {
+            throw new TabbyExceptionInvalidEventInput();
+        }
+
         taskManager.addTask(new Event(firstSplit[0].trim(), secondSplit[0].trim(), secondSplit[1].trim()));
     }
 }

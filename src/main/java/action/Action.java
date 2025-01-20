@@ -1,5 +1,6 @@
 package action;
 
+import exceptions.*;
 import task.TaskManager;
 
 /**
@@ -12,9 +13,17 @@ public abstract class Action {
      *
      * @param userInput The user's input string.
      * @return An Action object representing the parsed command.
+     * @throws TabbyExceptionInvalidCommand If the command is invalid.
+     * @throws TabbyExceptionInvalidMark If the mark command is invalid.
+     * @throws TabbyExceptionInvalidTaskNumber If the task number is not a valid integer.
      */
-    public static Action parseUserInput(String userInput) {
+    public static Action parseUserInput(String userInput) throws TabbyExceptionInvalidCommand,
+            TabbyExceptionInvalidMark, TabbyExceptionInvalidTaskNumber {
         userInput = userInput.trim();
+
+        if (userInput == null || userInput.isEmpty()) {
+            throw new TabbyExceptionInvalidCommand();
+        }
         String[] tokens = userInput.split(" ", 2);
         String taskAction = tokens[0].toLowerCase();
 
@@ -26,11 +35,20 @@ public abstract class Action {
             case "event":
                 return new AddAction(userInput);
             case "mark":
-                return new MarkAction(Integer.parseInt(tokens[1]) - 1);
             case "unmark":
-                return new UnmarkAction(Integer.parseInt(tokens[1]) - 1);
+                if (tokens.length < 2) {
+                    throw new TabbyExceptionInvalidMark();
+                }
+                try {
+                    int taskNumber = Integer.parseInt(tokens[1]) - 1;
+                    return taskAction.equals("mark") ?
+                            new MarkAction(taskNumber) :
+                            new UnmarkAction(taskNumber);
+                } catch (NumberFormatException e) {
+                    throw new TabbyExceptionInvalidTaskNumber();
+                }
             default:
-                return null;
+                throw new TabbyExceptionInvalidCommand();
         }
     }
 
@@ -38,6 +56,7 @@ public abstract class Action {
      * Runs the action with the provided task manager.
      *
      * @param taskManager The TaskManager to operate on.
+     * @throws TabbyException If an error occurs while executing the action.
      */
-    public abstract void runTask(TaskManager taskManager);
+    public abstract void runTask(TaskManager taskManager) throws TabbyException;
 }

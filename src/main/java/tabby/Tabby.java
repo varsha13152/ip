@@ -1,11 +1,12 @@
 package tabby;
-
 import java.util.Scanner;
+
+import exceptions.TabbyException;
 import task.TaskManager;
 import action.Action;
 
 /**
- * A class representing a chatbot.
+ * A class representing a chatbot Tabby.
  */
 public class Tabby {
     private static final String CHATBOT = "Tabby";
@@ -28,14 +29,27 @@ public class Tabby {
         while (true) {
             String userInput = sc.nextLine().trim();
 
-            if (userInput.equals("bye")) {
+            if (userInput.equalsIgnoreCase("bye")) {
                 sc.close();
                 break;
             }
-            Action action = Action.parseUserInput(userInput);
-            action.runTask(taskManager);
-
+            try {
+                Action action = Action.parseUserInput(userInput);
+                action.runTask(taskManager);
+            }
+            catch (TabbyException e) {
+                System.out.println(e.getMessage());
+            }
         }
+    }
+
+    /**
+     * Echoes the user input.
+     *
+     * @param userInput The user input to echo.
+     */
+    private void echo(String userInput) {
+        System.out.println(userInput); // Print echoed input
     }
 
     /**
@@ -45,6 +59,11 @@ public class Tabby {
         System.out.println("Bye. Hope to see you again soon!");
     }
 
+    /**
+     * The main method to start the chatbot.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         Tabby tabby = new Tabby();
 
