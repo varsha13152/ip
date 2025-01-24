@@ -10,7 +10,9 @@ import action.Action;
  */
 public class Tabby {
     private static final String CHATBOT = "Tabby";
-    private final TaskManager taskManager = new TaskManager();
+    private static final String DIRECTORY = "./data";
+    private static final String FILENAME = "tabby_data.txt";
+    private final TaskManager taskManager = new TaskManager(DIRECTORY,FILENAME);
 
     /**
      * Prints a greeting message for the chatbot.
@@ -34,7 +36,7 @@ public class Tabby {
                 break;
             }
             try {
-                Action action = Action.parseUserInput(userInput);
+                Action action = Action.userAction(userInput,true);
                 action.runTask(taskManager);
             }
             catch (TabbyException e) {

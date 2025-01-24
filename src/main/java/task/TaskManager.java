@@ -1,12 +1,90 @@
 package task;
 
+import java.io.*;
 import java.util.ArrayList;
+
+import java.util.HashMap;
+import java.util.Scanner;
+
+import action.AddAction;
+import action.Action;
+import exceptions.TabbyException;
+import action.Parser;
 
 /**
  * Manages a list of tasks, allowing for addition and completion tracking.
  */
 public class TaskManager {
-    private final ArrayList<Task> taskList = new ArrayList<Task>();
+    private final String directory;
+    private final String fileName;
+    private final ArrayList<Task> taskList;
+
+    public TaskManager(String directory, String fileName) {
+        this.directory = directory;
+        this.fileName = fileName;
+        this.taskList =  new ArrayList<>();
+        loadTasks();
+    }
+
+
+
+    public ArrayList<Task> loadTasks() {
+        File folder = new File(directory);
+
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+
+        File taskFile = new File(String.format("%s/%s", directory, fileName));
+
+        if (!taskFile.exists()) {
+            try {
+                taskFile.createNewFile();
+            } catch (IOException e) {
+                System.out.println("Error creating file: " + taskFile.getAbsolutePath());
+            }
+            return taskList;
+        }
+
+        // Read and process tasks from the file
+        try (Scanner scanner = new Scanner(taskFile)) {
+            while (scanner.hasNext()) {
+                String data = scanner.nextLine().trim();
+                if (!Parser.validateInput(data)) {
+                    HashMap<String, String> taskDetails = Parser.parseFileRead(data);
+                    Action action = new AddAction(new String[]{taskDetails.get("task"), taskDetails.get("description")},
+                            Boolean.parseBoolean(taskDetails.get("status")),false);
+                            action.runTask(this);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File not found - " + taskFile.getAbsolutePath());
+        } catch (TabbyException e) {
+            System.out.println("Error processing task file: " + e.getMessage());
+        }
+
+        return taskList;
+    }
+
+
+    public void saveTasks() {
+        File folder = new File(directory);
+
+        if (!folder.exists()) {
+          folder.mkdir();
+        }
+
+        File taskFile = new File(folder, fileName);
+
+        try (FileWriter writer = new FileWriter(taskFile)) {
+            for (Task task : this.taskList) {
+                writer.write(task.toString() + System.lineSeparator());
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + taskFile.getAbsolutePath());
+        }
+    }
+
 
     /**
      * Adds a new task to the task list.
@@ -14,26 +92,24 @@ public class TaskManager {
      */
     public void addTask(Task task) {
         taskList.add(task);
-        int noOfTasks = taskList.size();
-        if (noOfTasks == 1) {
-            System.out.println(String.format("Got it. I've added this task:" +
-                    "\n %s\nNow you have 1 task in the list",task));
-        } else {
-            System.out.println(String.format("Got it. I've added this task:" +
-                    "\n %s\nNow you have %d tasks in the list", task, noOfTasks));
-        }
+        saveTasks();
     }
 
     public void deleteTask(int taskNumber) {
         Task task = taskList.get(taskNumber);
         taskList.remove(taskNumber);
+        taskResponse("deleted",task);
+        saveTasks();
+    }
+
+    public void taskResponse(String command, Task task) {
         int noOfTasks = taskList.size();
         if (noOfTasks == 1) {
-            System.out.println(String.format("Got it. I've removed this task:" +
-                    "\n %s\nNow you have 1 task in the list",task));
+            System.out.println(String.format("Got it. I've %s this task:" +
+                    "\n %s\nNow you have 1 task in the list",command,task));
         } else {
-            System.out.println(String.format("Got it. I've removed this task:" +
-                    "\n %s\nNow you have %d tasks in the list", task, noOfTasks));
+            System.out.println(String.format("Got it. I've %s this task:" +
+                    "\n %s\nNow you have %d tasks in the list", command, task, noOfTasks));
         }
     }
 
@@ -64,6 +140,7 @@ public class TaskManager {
         } else {
             System.out.println("Invalid task number.");
         }
+        saveTasks();
     }
 
     /**
@@ -78,5 +155,6 @@ public class TaskManager {
         } else {
             System.out.println("Invalid task number.");
         }
+        saveTasks();
     }
 }

@@ -19,35 +19,47 @@ public abstract class Action {
     /**
      * Parses the user input and returns the appropriate Action object.
      *
-     * @param userInput The user's input string.
+     * @param input The user's input string.
      * @return An Action object representing the parsed command.
      * @throws TabbyExceptionInvalidCommand If the command is invalid.
      * @throws TabbyExceptionInvalidInput If the mark command is invalid.
      * @throws TabbyExceptionInvalidTaskNumber If the task number is not a valid integer.
      */
-    public static Action parseUserInput(String userInput) throws TabbyExceptionInvalidCommand,
+    public static Action userAction(String input, boolean isUserInput) throws TabbyExceptionInvalidCommand,
             TabbyExceptionInvalidInput, TabbyExceptionInvalidTaskNumber {
-        if (userInput == null || userInput.trim().isEmpty()) {
+
+        if (Parser.validateInput(input)) {
             throw new TabbyExceptionInvalidCommand();
         }
-        userInput = userInput.trim();
-        String[] tokens = userInput.split(" ", 2);
-        String taskAction = tokens[0].toUpperCase();
+
+        String[] parsedTask;
+        try {
+            parsedTask = Parser.parseTask(input);
+        } catch (TabbyExceptionIncompleteCommand e) {
+            throw new TabbyExceptionInvalidCommand();
+        }
+
 
         try {
-             Command command = Command.valueOf(taskAction);
+            Command command = Command.valueOf(parsedTask[0].toUpperCase());
+
             switch (command) {
                 case LIST:
                     return new ListAction();
+
                 case TODO:
                 case DEADLINE:
                 case EVENT:
-                    return new AddAction(userInput);
+                    return new AddAction(parsedTask, false, isUserInput);
+
                 case MARK:
                 case UNMARK:
                 case DELETE:
+                    if (parsedTask.length < 2) {
+                        throw new TabbyExceptionInvalidTaskNumber();  // Handle missing task number
+                    }
                     try {
-                        int taskNumber = Integer.parseInt(tokens[1]) - 1;
+                        int taskNumber = Integer.parseInt(parsedTask[1]) - 1;
                         if (command == Command.MARK) {
                             return new MarkAction(taskNumber);
                         } else if (command == Command.UNMARK) {
@@ -58,10 +70,12 @@ public abstract class Action {
                     } catch (NumberFormatException e) {
                         throw new TabbyExceptionInvalidTaskNumber();
                     }
+
                 default:
                     throw new TabbyExceptionInvalidCommand();
             }
-        } catch(IllegalArgumentException e) {
+
+        } catch (IllegalArgumentException e) {
             throw new TabbyExceptionInvalidCommand();
         }
     }

@@ -4,22 +4,18 @@ import task.TaskManager;
 import task.ToDo;
 import task.Event;
 import task.Deadline;
-import exceptions.TabbyExceptionInvalidDeadlineInput;
-import exceptions.TabbyExceptionInvalidEventInput;
-import exceptions.TabbyExceptionInvalidTodo;
-import exceptions.TabbyExceptionInvalidCommand;
-import exceptions.TabbyExceptionIncompleteCommand;
+import exceptions.*;
+
+import java.util.HashMap;
 
 /**
  * Handles adding new tasks to the task list.
  * This class processes user input to create appropriate task types.
  */
 public class AddAction extends Action {
-    private static final String DEADLINE_DELIMITER = "/by";
-    private static final String EVENT_FROM_DELIMITER = "/from";
-    private static final String EVENT_TO_DELIMITER = "/to";
-
-    private final String userInput;
+    private final String[] input;
+    private final boolean isDone;
+    private final boolean isUserInput;
 
     private enum Command {
         TODO,
@@ -27,14 +23,15 @@ public class AddAction extends Action {
         EVENT
     }
 
-
     /**
      * Constructs an AddAction with the specified user input.
      *
-     * @param userInput The task input string to be processed.
+     * @param input The task input string to be processed.
      */
-    public AddAction(String userInput) {
-        this.userInput = userInput.trim();
+    public AddAction(String[] input, boolean isDone, boolean isUserInput) {
+        this.input = input;
+        this.isDone = isDone;
+        this.isUserInput = isUserInput;
     }
 
     /**
@@ -45,21 +42,20 @@ public class AddAction extends Action {
      * @throws TabbyExceptionIncompleteCommand if the command lacks necessary details.
      */
     @Override
-    public void runTask(TaskManager taskManager) throws TabbyExceptionInvalidCommand, TabbyExceptionIncompleteCommand {
-        if (userInput.isEmpty()) {
-            throw new TabbyExceptionInvalidCommand();
-        }
+    public void runTask(TaskManager taskManager) throws TabbyExceptionInvalidCommand, TabbyExceptionIncompleteCommand, TabbyExceptionInvalidTodo {
 
-        String[] userInputTokens = userInput.split(" ", 2);
-        if (userInputTokens.length < 2 || userInputTokens[1].trim().isEmpty()) {
+        if (input.length < 2 || Parser.validateInput(input[1])) {
             throw new TabbyExceptionIncompleteCommand();
         }
 
-        String taskType = userInputTokens[0].trim().toUpperCase();
-        Command command = Command.valueOf(taskType);
-        String taskDescription = userInputTokens[1].trim();
-
+        Command command;
         try {
+            command = Command.valueOf(input[0].toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new TabbyExceptionInvalidCommand();
+        }
+
+        String taskDescription = input[1];
             switch (command) {
                 case TODO:
                     addTodoTask(taskManager, taskDescription);
@@ -72,9 +68,6 @@ public class AddAction extends Action {
                     break;
                 default:
                     throw new TabbyExceptionInvalidCommand();
-            }
-        } catch (TabbyExceptionInvalidTodo | TabbyExceptionInvalidDeadlineInput | TabbyExceptionInvalidEventInput e) {
-            System.err.println(e.getMessage());
         }
     }
 
@@ -86,10 +79,18 @@ public class AddAction extends Action {
      * @throws TabbyExceptionInvalidTodo if the description is empty.
      */
     private void addTodoTask(TaskManager taskManager, String description) throws TabbyExceptionInvalidTodo {
-        if (description.isEmpty()) {
-            throw new TabbyExceptionInvalidTodo();
+        try {
+            if (Parser.validateInput(description)) {
+                throw new TabbyExceptionInvalidTodo();
+            }
+            ToDo task = new ToDo(description, isDone);
+            taskManager.addTask(task);
+            if(isUserInput) {
+                taskManager.taskResponse("added", task);
+            }
+        } catch (TabbyExceptionInvalidTodo e) {
+            System.err.println(e.getMessage());
         }
-        taskManager.addTask(new ToDo(description));
     }
 
     /**
@@ -97,14 +98,18 @@ public class AddAction extends Action {
      *
      * @param taskManager The TaskManager to add the task to.
      * @param description The description of the Deadline task.
-     * @throws TabbyExceptionInvalidDeadlineInput if the description is invalid.
      */
-    private void addDeadlineTask(TaskManager taskManager, String description) throws TabbyExceptionInvalidDeadlineInput {
-        String[] tokens = description.split(DEADLINE_DELIMITER, 2);
-        if (tokens.length < 2 || tokens[0].trim().isEmpty() || tokens[1].trim().isEmpty()) {
-            throw new TabbyExceptionInvalidDeadlineInput();
+    private void addDeadlineTask(TaskManager taskManager, String description) {
+        try {
+            HashMap<String, String> deadlineDetails = Parser.parseDeadline(description, isUserInput);
+            Deadline task = new Deadline(deadlineDetails.get("description"), isDone, deadlineDetails.get("by"));
+            taskManager.addTask(task);
+            if(isUserInput) {
+                taskManager.taskResponse("added", task);
+            }
+        } catch (TabbyExceptionInvalidDeadlineInput e) {
+            System.err.println(e.getMessage());
         }
-        taskManager.addTask(new Deadline(tokens[0].trim(), tokens[1].trim()));
     }
 
     /**
@@ -112,23 +117,17 @@ public class AddAction extends Action {
      *
      * @param taskManager The TaskManager to add the task to.
      * @param description The description of the Event task.
-     * @throws TabbyExceptionInvalidEventInput if the description is incomplete or incorrect.
      */
-    private void addEventTask(TaskManager taskManager, String description) throws TabbyExceptionInvalidEventInput {
-        if (!description.contains(EVENT_FROM_DELIMITER) || !description.contains(EVENT_TO_DELIMITER)) {
-            throw new TabbyExceptionInvalidEventInput();
+    private void addEventTask(TaskManager taskManager, String description) {
+        try {
+            HashMap<String, String> eventDetails = Parser.parseEvent(description, isUserInput);
+            Event task = new Event(eventDetails.get("description"), isDone, eventDetails.get("from"), eventDetails.get("to"));
+            taskManager.addTask(task);
+            if(isUserInput) {
+                taskManager.taskResponse("added", task);
+            }
+        } catch (TabbyExceptionInvalidEventInput e) {
+            System.err.println(e.getMessage());
         }
-
-        String[] firstSplit = description.split(EVENT_FROM_DELIMITER, 2);
-        if (firstSplit.length < 2 || firstSplit[0].trim().isEmpty()) {
-            throw new TabbyExceptionInvalidEventInput();
-        }
-
-        String[] secondSplit = firstSplit[1].split(EVENT_TO_DELIMITER, 2);
-        if (secondSplit.length < 2 || secondSplit[0].trim().isEmpty() || secondSplit[1].trim().isEmpty()) {
-            throw new TabbyExceptionInvalidEventInput();
-        }
-
-        taskManager.addTask(new Event(firstSplit[0].trim(), secondSplit[0].trim(), secondSplit[1].trim()));
     }
 }
