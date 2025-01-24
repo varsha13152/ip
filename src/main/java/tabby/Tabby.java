@@ -36,7 +36,7 @@ public class Tabby {
                 break;
             }
             try {
-                Action action = Action.userAction(userInput,true);
+                Action action = Action.userAction(userInput,false,true);
                 action.runTask(taskManager);
             }
             catch (TabbyException e) {

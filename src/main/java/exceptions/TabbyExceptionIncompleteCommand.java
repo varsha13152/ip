@@ -8,7 +8,7 @@ public class TabbyExceptionIncompleteCommand extends TabbyException {
      * Constructs an {@code TabbyExceptionIncompleteCommand} with a detailed error message.
      */
     public TabbyExceptionIncompleteCommand() {
-        super("Incomplete Command. Here are the valid commands & the respective formats:\n" +
+        super("Invalid Command. Here are the valid commands & the respective formats:\n" +
                 "  - Mark: mark <task number>\n" +
                 "  - Unark: unmark <task number>\n" +
                 "  - Delete: delete <task number>\n" +
