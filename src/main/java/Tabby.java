@@ -1,9 +1,10 @@
-package tabby;
 import java.util.Scanner;
 
 import exceptions.TabbyException;
 import task.TaskManager;
 import action.Action;
+import task.Storage;
+
 
 /**
  * A class representing a chatbot Tabby.
@@ -12,7 +13,8 @@ public class Tabby {
     private static final String CHATBOT = "Tabby";
     private static final String DIRECTORY = "./data";
     private static final String FILENAME = "tabby_data.txt";
-    private final TaskManager taskManager = new TaskManager(DIRECTORY,FILENAME);
+    private final Storage storage = new Storage(DIRECTORY,FILENAME);
+    private final TaskManager taskManager = new TaskManager(this.storage);
 
     /**
      * Prints a greeting message for the chatbot.

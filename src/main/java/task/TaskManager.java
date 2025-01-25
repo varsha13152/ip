@@ -1,90 +1,25 @@
 package task;
 
-import java.io.*;
+
 import java.util.ArrayList;
 
-import java.util.HashMap;
-import java.util.Scanner;
-
-import action.AddAction;
-import action.Action;
-import exceptions.TabbyException;
-import action.Parser;
 
 /**
  * Manages a list of tasks, allowing for addition and completion tracking.
  */
 public class TaskManager {
-    private final String directory;
-    private final String fileName;
     private final ArrayList<Task> taskList;
+    private final Storage storage;
 
-    public TaskManager(String directory, String fileName) {
-        this.directory = directory;
-        this.fileName = fileName;
-        this.taskList =  new ArrayList<>();
+    public TaskManager(Storage storage) {
+        this.storage = storage;
+        this.taskList = new ArrayList<>();
         loadTasks();
     }
 
-
-
     public ArrayList<Task> loadTasks() {
-        File folder = new File(directory);
-
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
-
-        File taskFile = new File(String.format("%s/%s", directory, fileName));
-
-        if (!taskFile.exists()) {
-            try {
-                taskFile.createNewFile();
-            } catch (IOException e) {
-                System.out.println("Error creating file: " + taskFile.getAbsolutePath());
-            }
-            return taskList;
-        }
-
-        // Read and process tasks from the file
-        try (Scanner scanner = new Scanner(taskFile)) {
-            while (scanner.hasNext()) {
-                String data = scanner.nextLine().trim();
-                if (!Parser.validateInput(data)) {
-                    HashMap<String, String> taskDetails = Parser.parseFileRead(data);
-                    Action action = new AddAction(new String[]{taskDetails.get("task"), taskDetails.get("description")},
-                            Boolean.parseBoolean(taskDetails.get("status")),false);
-                            action.runTask(this);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error: File not found - " + taskFile.getAbsolutePath());
-        } catch (TabbyException e) {
-            System.out.println("Error processing task file: " + e.getMessage());
-        }
-
-        return taskList;
+        return storage.loadTasks(this);
     }
-
-
-    public void saveTasks() {
-        File folder = new File(directory);
-
-        if (!folder.exists()) {
-          folder.mkdir();
-        }
-
-        File taskFile = new File(folder, fileName);
-
-        try (FileWriter writer = new FileWriter(taskFile)) {
-            for (Task task : this.taskList) {
-                writer.write(task.toString() + System.lineSeparator());
-            }
-        } catch (IOException e) {
-            System.out.println("Error writing to file: " + taskFile.getAbsolutePath());
-        }
-    }
-
 
     /**
      * Adds a new task to the task list.
@@ -92,14 +27,14 @@ public class TaskManager {
      */
     public void addTask(Task task) {
         taskList.add(task);
-        saveTasks();
+        storage.saveTasks(taskList);
     }
 
     public void deleteTask(int taskNumber) {
         Task task = taskList.get(taskNumber);
         taskList.remove(taskNumber);
         taskResponse("deleted",task);
-        saveTasks();
+        storage.saveTasks(taskList);
     }
 
     public void taskResponse(String command, Task task) {
@@ -119,7 +54,6 @@ public class TaskManager {
     public void displayTaskList() {
         if (taskList.isEmpty()) {
             System.out.println("No tasks in your list!");
-            return;
         }
 
         System.out.println("Here are the tasks in your list:");
@@ -140,7 +74,7 @@ public class TaskManager {
         } else {
             System.out.println("Invalid task number.");
         }
-        saveTasks();
+        storage.saveTasks(taskList);
     }
 
     /**
@@ -155,6 +89,6 @@ public class TaskManager {
         } else {
             System.out.println("Invalid task number.");
         }
-        saveTasks();
+        storage.saveTasks(taskList);
     }
 }
