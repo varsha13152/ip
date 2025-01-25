@@ -1,3 +1,5 @@
+package tabby;
+
 import java.util.Scanner;
 
 import exceptions.TabbyException;
