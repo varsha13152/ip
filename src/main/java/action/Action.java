@@ -1,8 +1,11 @@
 package action;
-
-import exceptions.*;
+import exceptions.TabbyExceptionInvalidCommand;
+import exceptions.TabbyExceptionInvalidTaskNumber;
+import exceptions.TabbyExceptionIncompleteCommand;
+import exceptions.TabbyExceptionInvalidInput;
+import exceptions.TabbyException;
 import task.TaskManager;
-
+import tabby.Ui;
 /**
  * Abstract class representing an action that can be performed.
  */
@@ -25,7 +28,7 @@ public abstract class Action {
      * @throws TabbyExceptionInvalidInput If the mark command is invalid.
      * @throws TabbyExceptionInvalidTaskNumber If the task number is not a valid integer.
      */
-    public static Action userAction(String input, boolean isDone, boolean isUserInput) throws
+    public static Action userAction(String input, boolean isDone, boolean isUserInput, Ui ui) throws
             TabbyExceptionInvalidCommand, TabbyExceptionInvalidInput,
             TabbyExceptionInvalidTaskNumber, TabbyExceptionIncompleteCommand {
 
@@ -40,7 +43,7 @@ public abstract class Action {
             return switch (command) {
                 case LIST -> new ListAction();
                 case TODO, DEADLINE, EVENT ->
-                        new AddAction(parsedTask, isDone, isUserInput);
+                        new AddAction(parsedTask, isDone, isUserInput, ui);
                 case MARK, UNMARK, DELETE -> {
                     if (parsedTask.length < 2) {
                         throw new TabbyExceptionInvalidTaskNumber();

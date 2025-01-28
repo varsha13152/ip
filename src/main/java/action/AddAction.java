@@ -1,11 +1,14 @@
 package action;
-
+import tabby.Ui;
 import task.TaskManager;
 import task.ToDo;
 import task.Event;
 import task.Deadline;
-import exceptions.*;
-
+import exceptions.TabbyExceptionInvalidDeadlineInput;
+import exceptions.TabbyExceptionInvalidEventInput;
+import exceptions.TabbyExceptionInvalidTodo;
+import exceptions.TabbyExceptionInvalidCommand;
+import exceptions.TabbyExceptionIncompleteCommand;
 import java.util.HashMap;
 
 /**
@@ -16,6 +19,7 @@ public class AddAction extends Action {
     private final String[] input;
     private final boolean isDone;
     private final boolean isUserInput;
+    private final Ui ui;
 
     private enum Command {
         TODO,
@@ -28,10 +32,11 @@ public class AddAction extends Action {
      *
      * @param input The task input string to be processed.
      */
-    public AddAction(String[] input, boolean isDone, boolean isUserInput) {
+    public AddAction(String[] input, boolean isDone, boolean isUserInput, Ui ui) {
         this.input = input;
         this.isDone = isDone;
         this.isUserInput = isUserInput;
+        this.ui = ui;
     }
 
     /**
@@ -89,7 +94,7 @@ public class AddAction extends Action {
                 taskManager.taskResponse("added", task);
             }
         } catch (TabbyExceptionInvalidTodo e) {
-            System.err.println(e.getMessage());
+            ui.error(e.getMessage());
         }
     }
 
@@ -108,7 +113,7 @@ public class AddAction extends Action {
                 taskManager.taskResponse("added", task);
             }
         } catch (TabbyExceptionInvalidDeadlineInput e) {
-            System.err.println(e.getMessage());
+            ui.error(e.getMessage());
         }
     }
 
@@ -127,7 +132,7 @@ public class AddAction extends Action {
                 taskManager.taskResponse("added", task);
             }
         } catch (TabbyExceptionInvalidEventInput e) {
-            System.err.println(e.getMessage());
+           ui.error(e.getMessage());
         }
     }
 }

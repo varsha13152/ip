@@ -12,14 +12,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import tabby.Ui;
 
 public class Storage {
     public final String directory;
     public final String fileName;
+    private final Ui ui;
 
-    public Storage(String directory, String fileName) {
+    public Storage(String directory, String fileName, Ui ui) {
         this.directory = directory;
         this.fileName = fileName;
+        this.ui = ui;
     }
 
     public ArrayList<Task> loadTasks(TaskManager taskManager) {
@@ -36,7 +39,7 @@ public class Storage {
             try {
                 taskFile.createNewFile();
             } catch (IOException e) {
-                System.out.println("Error creating file: " + taskFile.getAbsolutePath());
+                ui.error("Error creating file: " + taskFile.getAbsolutePath());
             }
             return taskList;
         }
@@ -47,15 +50,15 @@ public class Storage {
                 if (!Parser.validateInput(data)) {
                     HashMap<String, String> taskDetails = Parser.parseFileRead(data);
                     Action action = new AddAction(new String[]{taskDetails.get("task"), taskDetails.get("description")},
-                            Boolean.parseBoolean(taskDetails.get("status")),false);
+                            Boolean.parseBoolean(taskDetails.get("status")),false,ui);
                     action.runTask(taskManager);
 
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Error: File not found - " + taskFile.getAbsolutePath());
+            ui.error("File not found - " + taskFile.getAbsolutePath());
         } catch (TabbyException e) {
-            System.out.println("Error processing task file: " + e.getMessage());
+            ui.error("Unable to process task file: " + e.getMessage());
         }
 
         return taskList;
@@ -76,7 +79,7 @@ public class Storage {
                 writer.write(task.toString() + System.lineSeparator());
             }
         } catch (IOException e) {
-            System.out.println("Error writing to file: " + taskFile.getAbsolutePath());
+            ui.error("Error writing to file: " + taskFile.getAbsolutePath());
         }
     }
 

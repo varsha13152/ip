@@ -1,7 +1,5 @@
 package tabby;
-
 import java.util.Scanner;
-
 import exceptions.TabbyException;
 import task.TaskManager;
 import action.Action;
@@ -15,14 +13,21 @@ public class Tabby {
     private static final String CHATBOT = "Tabby";
     private static final String DIRECTORY = "./data";
     private static final String FILENAME = "tabby_data.txt";
-    private final Storage storage = new Storage(DIRECTORY,FILENAME);
-    private final TaskManager taskManager = new TaskManager(this.storage);
+    private final Storage storage;
+    private final TaskManager taskManager;
+    private final Ui ui;
+
+    public Tabby() {
+        this.ui = new Ui();
+        this.storage = new Storage(DIRECTORY,FILENAME, this.ui);
+        this.taskManager = new TaskManager(this.storage, this.ui);
+    }
 
     /**
      * Prints a greeting message for the chatbot.
      */
     public void greeting() {
-        System.out.println(String.format("Hello! I'm %s.\n What can I do for you?", CHATBOT));
+        ui.display(String.format("Hello! I'm %s.\n What can I do for you?", CHATBOT));
     }
 
     /**
@@ -40,11 +45,11 @@ public class Tabby {
                 break;
             }
             try {
-                Action action = Action.userAction(userInput,false,true);
+                Action action = Action.userAction(userInput,false,true, ui);
                 action.runTask(taskManager);
             }
             catch (TabbyException e) {
-                System.out.println(e.getMessage());
+                ui.error(e.getMessage());
             }
         }
     }
@@ -55,14 +60,14 @@ public class Tabby {
      * @param userInput The user input to echo.
      */
     private void echo(String userInput) {
-        System.out.println(userInput); // Print echoed input
+        ui.display(userInput); // Print echoed input
     }
 
     /**
      * Prints a goodbye message for the chatbot.
      */
     public void goodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
+        ui.display("Bye. Hope to see you again soon!");
     }
 
     /**
