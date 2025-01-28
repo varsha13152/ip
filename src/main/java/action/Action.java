@@ -17,7 +17,8 @@ public abstract class Action {
         DELETE,
         TODO,
         DEADLINE,
-        EVENT
+        EVENT,
+        FIND
     }
     /**
      * Parses the user input and returns the appropriate Action object.
@@ -42,6 +43,12 @@ public abstract class Action {
 
             return switch (command) {
                 case LIST -> new ListAction();
+                case FIND -> {
+                    if (parsedTask.length < 2) {
+                        throw new TabbyExceptionIncompleteCommand();
+                    }
+                    yield new FindAction(parsedTask[1]);
+                }
                 case TODO, DEADLINE, EVENT ->
                         new AddAction(parsedTask, isDone, isUserInput, ui);
                 case MARK, UNMARK, DELETE -> {
