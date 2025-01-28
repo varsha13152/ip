@@ -145,5 +145,27 @@ public class TaskManager {
         }
         storage.saveTasks(taskList);
     }
+
+    public void findTask(String keyword) {
+        if (taskList.isEmpty()) {
+            ui.error("There are no tasks in your list!");
+        } else {
+            StringBuilder taskListString = new StringBuilder();
+            int matchCount = 0;
+
+            for (int i = 0; i < taskList.size(); i++) {
+                String task = taskList.get(i).toString();
+                if (task.contains(keyword)) {
+                    taskListString.append(++matchCount).append(". ").append(task).append("\n");
+                }
+            }
+            if (matchCount == 0) {
+                ui.error("No matching tasks found!");
+            } else {
+                ui.display("Here are the matching tasks in your list:\n" + taskListString.toString().trim());
+            }
+        }
+    }
+
 }
 
