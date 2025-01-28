@@ -60,7 +60,7 @@ public class Tabby {
      * @param userInput The user input to echo.
      */
     private void echo(String userInput) {
-        ui.display(userInput); // Print echoed input
+        ui.display(userInput);
     }
 
     /**
@@ -77,14 +77,8 @@ public class Tabby {
      */
     public static void main(String[] args) {
         Tabby tabby = new Tabby();
-
-        // Print the greeting message
         tabby.greeting();
-
-        // Read and respond to user input
         tabby.readUserInput();
-
-        // Print goodbye message
         tabby.goodbye();
     }
 }

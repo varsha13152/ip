@@ -35,7 +35,7 @@ public class TaskManager {
 
     public void deleteTask(int taskNumber) {
         try {
-            // Check if the task number is within a valid range
+
             if (taskNumber < 0 || taskNumber >= taskList.size()) {
                 throw new IndexOutOfBoundsException("Task number is out of range.");
             }
