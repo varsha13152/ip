@@ -34,10 +34,23 @@ public class TaskManager {
     }
 
     public void deleteTask(int taskNumber) {
-        Task task = taskList.get(taskNumber);
-        taskList.remove(taskNumber);
-        taskResponse("deleted",task);
-        storage.saveTasks(taskList);
+        try {
+            // Check if the task number is within a valid range
+            if (taskNumber < 0 || taskNumber >= taskList.size()) {
+                throw new IndexOutOfBoundsException("Task number is out of range.");
+            }
+
+            // Retrieve and delete the task
+            Task task = taskList.get(taskNumber);
+            taskList.remove(taskNumber);
+
+            // Provide feedback and save the updated list
+            taskResponse("deleted", task);
+            storage.saveTasks(taskList);
+
+        } catch (IndexOutOfBoundsException e) {
+            ui.error("Error: Unable to delete task. " + e.getMessage());
+        }
     }
 
     public void taskResponse(String command, Task task) {
@@ -51,17 +64,21 @@ public class TaskManager {
         }
     }
 
+    public ArrayList<Task> getTasks() {
+        return taskList;
+    }
+
     /**
      * Displays the list of tasks.
      */
     public void displayTaskList() {
         if (taskList.isEmpty()) {
             ui.display("No tasks in your list!");
-        }
-
-        System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < taskList.size(); i++) {
-            ui.display((i + 1) + ". " + taskList.get(i));
+        } else {
+            ui.display("Here are the tasks in your list:");
+            for (int i = 0; i < taskList.size(); i++) {
+                ui.display((i + 1) + ". " + taskList.get(i));
+            }
         }
     }
 
