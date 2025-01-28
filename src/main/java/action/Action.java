@@ -27,6 +27,7 @@ public abstract class Action {
      * @throws TabbyExceptionInvalidCommand If the command is invalid.
      * @throws TabbyExceptionInvalidInput If the mark command is invalid.
      * @throws TabbyExceptionInvalidTaskNumber If the task number is not a valid integer.
+     * @throws TabbyExceptionIncompleteCommand If the command is incomplete.
      */
     public static Action userAction(String input, boolean isDone, boolean isUserInput, Ui ui) throws
             TabbyExceptionInvalidCommand, TabbyExceptionInvalidInput,

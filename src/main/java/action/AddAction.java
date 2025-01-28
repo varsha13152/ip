@@ -12,9 +12,9 @@ import exceptions.TabbyExceptionIncompleteCommand;
 import java.util.HashMap;
 
 /**
- * Handles adding new tasks to the task list.
  * This class processes user input to create appropriate task types.
  */
+
 public class AddAction extends Action {
     private final String[] input;
     private final boolean isDone;
