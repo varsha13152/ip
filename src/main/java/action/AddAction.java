@@ -47,7 +47,8 @@ public class AddAction extends Action {
      * @throws TabbyExceptionIncompleteCommand if the command lacks necessary details.
      */
     @Override
-    public void runTask(TaskManager taskManager) throws TabbyExceptionInvalidCommand, TabbyExceptionIncompleteCommand, TabbyExceptionInvalidTodo {
+    public void runTask(TaskManager taskManager) throws TabbyExceptionInvalidCommand,
+                TabbyExceptionIncompleteCommand, TabbyExceptionInvalidTodo {
 
         if (input.length < 2 || Parser.validateInput(input[1])) {
             throw new TabbyExceptionIncompleteCommand();
