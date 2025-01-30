@@ -52,11 +52,6 @@ public class TaskManager {
      */
     public void deleteTask(int taskNumber) {
         try {
-<<<<<<< HEAD
-            // Validate task number
-=======
-
->>>>>>> branch-A-CodingStandard
             if (taskNumber < 0 || taskNumber >= taskList.size()) {
                 throw new IndexOutOfBoundsException("Task number is out of range.");
             }
