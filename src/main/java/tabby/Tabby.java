@@ -1,9 +1,10 @@
 package tabby;
 import java.util.Scanner;
+
 import exceptions.TabbyException;
-import task.TaskManager;
 import action.Action;
 import task.Storage;
+import task.TaskManager;
 
 
 /**
@@ -17,9 +18,17 @@ public class Tabby {
     private final TaskManager taskManager;
     private final Ui ui;
 
+    /**
+     * Constructs a new Tabby instance and initializes its components.
+     * The constructor sets up the user interface, storage, and task management.
+     *
+     * - Initializes the Ui component to handle user interactions.
+     * - Sets up Storage with a specified directory and filename for task persistence.
+     * - Initializes TaskManager to manage tasks with the provided storage and UI.
+     */
     public Tabby() {
         this.ui = new Ui();
-        this.storage = new Storage(DIRECTORY,FILENAME, this.ui);
+        this.storage = new Storage(DIRECTORY, FILENAME, this.ui);
         this.taskManager = new TaskManager(this.storage, this.ui);
     }
 
@@ -45,10 +54,9 @@ public class Tabby {
                 break;
             }
             try {
-                Action action = Action.userAction(userInput,false,true, ui);
+                Action action = Action.userAction(userInput, false, true, ui);
                 action.runTask(taskManager);
-            }
-            catch (TabbyException e) {
+            } catch (TabbyException e) {
                 ui.error(e.getMessage());
             }
         }

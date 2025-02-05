@@ -1,43 +1,71 @@
 package action;
-import exceptions.*;
-import java.util.regex.*;
+
+import exceptions.TabbyExceptionIncompleteCommand;
+import exceptions.TabbyExceptionInvalidCommand;
+import exceptions.TabbyExceptionInvalidDeadlineInput;
+import exceptions.TabbyExceptionInvalidEventInput;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.HashMap;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * The Parser class is responsible for handling user and file input parsing.
+ * It provides methods to validate, parse tasks, deadlines, and events.
+ */
 public class Parser {
+
     // User input patterns
     private static final Pattern DEADLINE_USER_INPUT_PATTERN = Pattern.compile("(.+?)\\s*/by\\s*(.+)");
     private static final Pattern EVENT_USER_INPUT_PATTERN = Pattern.compile("(.+?)\\s*/from\\s*(.+?)\\s*/to\\s*(.+)");
 
     // File input patterns
     private static final Pattern DEADLINE_FILE_INPUT_PATTERN = Pattern.compile("(.+?)\\s*\\(by:\\s*(.+?)\\)");
-    private static final Pattern EVENT_FILE_INPUT_PATTERN = Pattern.compile("(.+?)\\s*\\(from:\\s*(.+?)\\s*to:\\s*(.+?)\\)");
+    private static final Pattern EVENT_FILE_INPUT_PATTERN =
+            Pattern.compile("(.+?)\\s*\\(from:\\s*(.+?)\\s*to:\\s*(.+?)\\)");
     private static final Pattern FILE_INPUT_TASK_PATTERN = Pattern.compile("^\\[(T|E|D)\\]\\[(X| )\\]\\s*(.*)$");
 
     // Date formatters
     private static final DateTimeFormatter USER_INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
 
+    /**
+     * Validates if the input is null or empty.
+     *
+     * @param input The user input string.
+     * @return true if input is null or empty, otherwise false.
+     */
     public static boolean validateInput(String input) {
         return input == null || input.trim().isEmpty();
     }
 
+    /**
+     * Parses the task details from the file input.
+     *
+     * @param input The input string from the file.
+     * @return A HashMap containing task details.
+     */
     public static HashMap<String, String> parseFileRead(String input) {
         Matcher matcher = FILE_INPUT_TASK_PATTERN.matcher(input);
         HashMap<String, String> taskDetails = new HashMap<>();
 
         if (matcher.matches()) {
             switch (matcher.group(1)) {
-                case "T":
-                    taskDetails.put("task", "todo");
-                    break;
-                case "D":
-                    taskDetails.put("task", "deadline");
-                    break;
-                default:
-                    taskDetails.put("task", "event");
+            case "T":
+                taskDetails.put("task", "todo");
+                break;
+            case "D":
+                taskDetails.put("task", "deadline");
+                break;
+            case "E":
+                taskDetails.put("task", "event");
+                break;
+            default:
+                break;
             }
             taskDetails.put("status", matcher.group(2).equals("X") ? "true" : "false");
             taskDetails.put("description", matcher.group(3));
@@ -46,15 +74,23 @@ public class Parser {
         return taskDetails;
     }
 
-    public static String[] parseTask(String input) throws TabbyExceptionInvalidCommand, TabbyExceptionIncompleteCommand {
+    /**
+     * Parses the user input and returns the parsed task components.
+     *
+     * @param input The user input string.
+     * @return An array containing the parsed command and arguments.
+     * @throws TabbyExceptionInvalidCommand If the command is invalid.
+     * @throws TabbyExceptionIncompleteCommand If the command is incomplete.
+     */
+    public static String[] parseTask(String input) throws TabbyExceptionInvalidCommand,
+            TabbyExceptionIncompleteCommand {
         if (validateInput(input)) {
             throw new TabbyExceptionInvalidCommand();
         }
 
         if (input.equals("list")) {
-            return new String[] {input.trim()};
+            return new String[]{input.trim()};
         }
-
 
         String[] tokens = input.trim().split("\\s+", 2);
 
@@ -64,7 +100,16 @@ public class Parser {
         return new String[]{tokens[0].trim(), tokens[1].trim()};
     }
 
-    public static HashMap<String, String> parseDeadline(String input, boolean isUserInput) throws TabbyExceptionInvalidDeadlineInput {
+    /**
+     * Parses a deadline task input.
+     *
+     * @param input The input string.
+     * @param isUserInput Whether the input is from a user or a file.
+     * @return A HashMap containing deadline details.
+     * @throws TabbyExceptionInvalidDeadlineInput If the input format is incorrect.
+     */
+    public static HashMap<String, String> parseDeadline(String input, boolean isUserInput)
+            throws TabbyExceptionInvalidDeadlineInput {
         Pattern pattern = isUserInput ? DEADLINE_USER_INPUT_PATTERN : DEADLINE_FILE_INPUT_PATTERN;
         Matcher matcher = pattern.matcher(input);
 
@@ -80,11 +125,9 @@ public class Parser {
             deadlineDetails.put("description", description);
 
             if (isUserInput) {
-                // Parse user input date
                 LocalDateTime deadline = LocalDateTime.parse(dateTimeStr, USER_INPUT_FORMATTER);
                 deadlineDetails.put("by", deadline.format(OUTPUT_FORMATTER));
             } else {
-                // Use file input date directly
                 deadlineDetails.put("by", dateTimeStr);
             }
 
@@ -94,7 +137,16 @@ public class Parser {
         }
     }
 
-    public static HashMap<String, String> parseEvent(String input, boolean isUserInput) throws TabbyExceptionInvalidEventInput {
+    /**
+     * Parses an event task input.
+     *
+     * @param input The input string.
+     * @param isUserInput Whether the input is from a user or a file.
+     * @return A HashMap containing event details.
+     * @throws TabbyExceptionInvalidEventInput If the input format is incorrect.
+     */
+    public static HashMap<String, String> parseEvent(String input, boolean isUserInput)
+            throws TabbyExceptionInvalidEventInput {
         Pattern pattern = isUserInput ? EVENT_USER_INPUT_PATTERN : EVENT_FILE_INPUT_PATTERN;
         Matcher matcher = pattern.matcher(input);
 
@@ -111,7 +163,6 @@ public class Parser {
             eventDetails.put("description", description);
 
             if (isUserInput) {
-                // Parse user input dates
                 LocalDateTime fromTime = LocalDateTime.parse(fromTimeStr, USER_INPUT_FORMATTER);
                 LocalDateTime toTime = LocalDateTime.parse(toTimeStr, USER_INPUT_FORMATTER);
 

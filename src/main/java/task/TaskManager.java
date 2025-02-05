@@ -78,9 +78,11 @@ public class TaskManager {
     public void taskResponse(String command, Task task) {
         int noOfTasks = taskList.size();
         if (noOfTasks == 1) {
-            ui.display(String.format("Got it. I've %s this task:\n %s\nNow you have 1 task in the list", command, task));
+            ui.display(String.format("Got it. I've %s this task:\n %s\nNow you have 1 task in the list",
+                    command, task));
         } else {
-            ui.display(String.format("Got it. I've %s this task:\n %s\nNow you have %d tasks in the list", command, task, noOfTasks));
+            ui.display(String.format("Got it. I've %s this task:\n %s\nNow you have %d tasks in the list",
+                    command, task, noOfTasks));
         }
     }
 
@@ -141,6 +143,15 @@ public class TaskManager {
         storage.saveTasks(taskList);
     }
 
+    /**
+     * Searches the task list for tasks containing the specified keyword and displays the matching tasks.
+     *
+     * @param keyword The keyword to search for within task descriptions.
+     *
+     * If the task list is empty, an error message is displayed indicating there are no tasks.
+     * If no matching tasks are found, an error message is displayed.
+     * Otherwise, the matching tasks are displayed in a formatted list.
+     */
     public void findTask(String keyword) {
         if (taskList.isEmpty()) {
             ui.error("There are no tasks in your list!");
