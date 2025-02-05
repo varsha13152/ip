@@ -87,5 +87,5 @@ public abstract class Action {
      * @param taskManager The TaskManager to operate on.
      * @throws TabbyException If an error occurs while executing the action.
      */
-    public abstract void runTask(TaskManager taskManager) throws TabbyException;
+    public abstract String runTask(TaskManager taskManager) throws TabbyException;
 }

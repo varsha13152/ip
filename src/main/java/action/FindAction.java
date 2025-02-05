@@ -21,7 +21,7 @@ public class FindAction extends Action {
      * @param taskManager The TaskManager to operate on.
      */
     @Override
-    public void runTask(TaskManager taskManager) {
-        taskManager.findTask(keyword);
+    public String runTask(TaskManager taskManager) {
+        return taskManager.findTask(keyword);
     }
 }

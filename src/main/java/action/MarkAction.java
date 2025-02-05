@@ -21,7 +21,7 @@ public class MarkAction extends Action {
      * @param taskManager The TaskManager to operate on.
      */
     @Override
-    public void runTask(TaskManager taskManager) {
-        taskManager.markTaskDone(taskNumber);
+    public String runTask(TaskManager taskManager) {
+        return taskManager.markTaskDone(taskNumber);
     }
 }

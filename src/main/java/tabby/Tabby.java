@@ -11,7 +11,6 @@ import task.TaskManager;
  * A class representing a chatbot Tabby.
  */
 public class Tabby {
-    private static final String CHATBOT = "Tabby";
     private static final String DIRECTORY = "./data";
     private static final String FILENAME = "tabby_data.txt";
     private final Storage storage;
@@ -21,7 +20,7 @@ public class Tabby {
     /**
      * Constructs a new Tabby instance and initializes its components.
      * The constructor sets up the user interface, storage, and task management.
-     *
+     * <p>
      * - Initializes the Ui component to handle user interactions.
      * - Sets up Storage with a specified directory and filename for task persistence.
      * - Initializes TaskManager to manage tasks with the provided storage and UI.
@@ -35,33 +34,32 @@ public class Tabby {
     /**
      * Prints a greeting message for the chatbot.
      */
-    public void greeting() {
-        ui.display(String.format("Hello! I'm %s.\n What can I do for you?", CHATBOT));
+    public String getGreeting() {
+        return ui.greeting();
     }
 
     /**
-     * Reads user input from the console, allowing the user to interact with
-     * the chatbot by adding tasks or viewing the task list. Exits when the
-     * user types "bye".
+     * Processes user input, allowing the user to interact with the chatbot by adding tasks
+     * or viewing the task list. Returns a goodbye message if the user types "bye".
+     *
+     * @param input The user input string.
+     * @return A message confirming task actions, an error message, or a goodbye message.
      */
-    public void readUserInput() {
-        Scanner sc = new Scanner(System.in);
-        while (true) {
-            String userInput = sc.nextLine().trim();
-
-            if (userInput.equalsIgnoreCase("bye")) {
-                sc.close();
-                break;
-            }
-            try {
-                Action action = Action.userAction(userInput, false, true, ui);
-                action.runTask(taskManager);
-            } catch (TabbyException e) {
-                ui.error(e.getMessage());
-            }
+    public String readUserInput(String input) {
+        if (input.equalsIgnoreCase("bye")) {
+            return goodbye();
         }
-    }
 
+        StringBuilder output = new StringBuilder();
+        try {
+            Action action = Action.userAction(input, false, true, ui);
+            output.append(action.runTask(taskManager)).append("\n");
+        } catch (TabbyException e) {
+            output.append(ui.error(e.getMessage())).append("\n");
+        }
+
+        return output.toString().trim();
+    }
     /**
      * Echoes the user input.
      *
@@ -74,19 +72,21 @@ public class Tabby {
     /**
      * Prints a goodbye message for the chatbot.
      */
-    public void goodbye() {
-        ui.display("Bye. Hope to see you again soon!");
+    public String goodbye() {
+        return ui.display("Bye. Hope to see you again soon!");
     }
 
-    /**
-     * The main method to start the chatbot.
-     *
-     * @param args Command-line arguments.
-     */
-    public static void main(String[] args) {
-        Tabby tabby = new Tabby();
-        tabby.greeting();
-        tabby.readUserInput();
-        tabby.goodbye();
-    }
+
+//
+//    /**
+//     * The main method to start the chatbot.
+//     *
+//     * @param args Command-line arguments.
+//     */
+//    public static void main(String[] args) {
+//        Tabby tabby = new Tabby();
+//        tabby.getGreeting();
+//        tabby.readUserInput();
+//        tabby.goodbye();
+//    }
 }

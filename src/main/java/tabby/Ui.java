@@ -5,16 +5,19 @@ package tabby;
  * in a formatted and user-friendly manner.
  */
 public class Ui {
-    private static final String EMOTICON = "(^-.-^)";
-    private static final String SEPARATOR = "------------------------------------------------------------";
+    private static final String CHATBOT = "Tabby";
 
     /**
      * Displays a message in a formatted manner.
      *
      * @param message The message to be displayed.
      */
-    public void display(String message) {
-        System.out.println(String.format("%s\n %s: %s\n %s", SEPARATOR, EMOTICON, message, SEPARATOR));
+    public String display(String message) {
+       return message;
+    }
+
+    public String greeting() {
+        return String.format("Hello! I'm %s.\n What can I do for you?", CHATBOT);
     }
 
     /**
@@ -22,8 +25,8 @@ public class Ui {
      *
      * @param message The error message to be displayed.
      */
-    public void error(String message) {
-        System.err.println(String.format("%s\n Error!: \n %s", SEPARATOR, message, SEPARATOR));
+    public String error(String message) {
+        return String.format("Error!: \n %s", message);
     }
 }
 

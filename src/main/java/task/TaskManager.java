@@ -49,42 +49,40 @@ public class TaskManager {
      * Deletes a task from the task list based on its index and saves the updated list to storage.
      *
      * @param taskNumber The index of the task to be deleted.
+     * @return A message confirming the task deletion or an error message.
      */
-    public void deleteTask(int taskNumber) {
+    public String deleteTask(int taskNumber) {
         try {
             if (taskNumber < 0 || taskNumber >= taskList.size()) {
                 throw new IndexOutOfBoundsException("Task number is out of range.");
             }
 
-            // Retrieve and delete the task
             Task task = taskList.get(taskNumber);
             taskList.remove(taskNumber);
-
-            // Provide feedback and save updated list
-            taskResponse("deleted", task);
             storage.saveTasks(taskList);
-
+            return taskResponse("deleted", task);
         } catch (IndexOutOfBoundsException e) {
-            ui.error("Error: Unable to delete task. " + e.getMessage());
+            return "Error: Unable to delete task. " + e.getMessage();
         }
     }
+
 
     /**
      * Provides feedback to the user about a task-related action.
      *
      * @param command The action performed (e.g., "added", "deleted").
      * @param task    The task that was affected.
+     * @return A message describing the result of the action.
      */
-    public void taskResponse(String command, Task task) {
+    public String taskResponse(String command, Task task) {
         int noOfTasks = taskList.size();
         if (noOfTasks == 1) {
-            ui.display(String.format("Got it. I've %s this task:\n %s\nNow you have 1 task in the list",
-                    command, task));
+            return String.format("Got it. I've %s this task:\n %s\nNow you have 1 task in the list", command, task);
         } else {
-            ui.display(String.format("Got it. I've %s this task:\n %s\nNow you have %d tasks in the list",
-                    command, task, noOfTasks));
+            return String.format("Got it. I've %s this task:\n %s\nNow you have %d tasks in the list", command, task, noOfTasks);
         }
     }
+
 
     /**
      * Retrieves the list of tasks.
@@ -98,16 +96,16 @@ public class TaskManager {
     /**
      * Displays all tasks in the task list to the user.
      */
-    public void displayTaskList() {
+    public String displayTaskList() {
         if (taskList.isEmpty()) {
-            ui.display("No tasks in your list!");
+            return ui.display("No tasks in your list!");
         } else {
             StringBuilder taskListString = new StringBuilder("Here are the tasks in your list:\n");
             for (int i = 0; i < taskList.size(); i++) {
                 taskListString.append(i + 1).append(". ").append(taskList.get(i)).append("\n");
             }
             // Feed the combined string to ui.display
-            ui.display(taskListString.toString().trim());
+            return taskListString.toString().trim();
         }
     }
 
@@ -115,32 +113,34 @@ public class TaskManager {
      * Marks a task as done based on its index and saves the updated list to storage.
      *
      * @param taskNumber The index of the task to mark as done.
+     * @return A message confirming the task has been marked as done or an error message.
      */
-    public void markTaskDone(int taskNumber) {
+    public String markTaskDone(int taskNumber) {
         if (taskNumber >= 0 && taskNumber < taskList.size()) {
             Task task = taskList.get(taskNumber);
             task.markAsDone();
-            ui.display(String.format("Nice! I've marked this task as done:\n %s", task));
+            storage.saveTasks(taskList);
+            return String.format("Nice! I've marked this task as done:\n %s", task);
         } else {
-            ui.error("Invalid task number.");
+            return "Invalid task number.";
         }
-        storage.saveTasks(taskList);
     }
 
     /**
      * Marks a task as not done based on its index and saves the updated list to storage.
      *
      * @param taskNumber The index of the task to mark as not done.
+     * @return A message confirming the task has been marked as not done or an error message.
      */
-    public void markTaskNotDone(int taskNumber) {
+    public String markTaskNotDone(int taskNumber) {
         if (taskNumber >= 0 && taskNumber < taskList.size()) {
             Task task = taskList.get(taskNumber);
             task.markAsNotDone();
-            ui.display(String.format("OK, I've marked this task as not done yet:\n %s", task));
+            storage.saveTasks(taskList);
+            return String.format("OK, I've marked this task as not done yet:\n %s", task);
         } else {
-            ui.error("Invalid task number.");
+            return "Invalid task number.";
         }
-        storage.saveTasks(taskList);
     }
 
     /**
@@ -152,24 +152,31 @@ public class TaskManager {
      * If no matching tasks are found, an error message is displayed.
      * Otherwise, the matching tasks are displayed in a formatted list.
      */
-    public void findTask(String keyword) {
+    /**
+     * Searches the task list for tasks containing the specified keyword and displays the matching tasks.
+     *
+     * @param keyword The keyword to search for within task descriptions.
+     * @return A message containing the matching tasks or an error message.
+     */
+    public String findTask(String keyword) {
         if (taskList.isEmpty()) {
-            ui.error("There are no tasks in your list!");
-        } else {
-            StringBuilder taskListString = new StringBuilder();
-            int matchCount = 0;
+            return "There are no tasks in your list!";
+        }
 
-            for (int i = 0; i < taskList.size(); i++) {
-                String task = taskList.get(i).toString();
-                if (task.contains(keyword)) {
-                    taskListString.append(++matchCount).append(". ").append(task).append("\n");
-                }
+        StringBuilder taskListString = new StringBuilder();
+        int matchCount = 0;
+
+        for (int i = 0; i < taskList.size(); i++) {
+            String task = taskList.get(i).toString();
+            if (task.contains(keyword)) {
+                taskListString.append(++matchCount).append(". ").append(task).append("\n");
             }
-            if (matchCount == 0) {
-                ui.error("No matching tasks found!");
-            } else {
-                ui.display("Here are the matching tasks in your list:\n" + taskListString.toString().trim());
-            }
+        }
+
+        if (matchCount == 0) {
+            return "No matching tasks found!";
+        } else {
+            return "Here are the matching tasks in your list:\n" + taskListString.toString().trim();
         }
     }
 

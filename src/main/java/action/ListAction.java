@@ -13,7 +13,7 @@ public class ListAction extends Action {
      * @param taskManager The TaskManager to operate on.
      */
     @Override
-    public void runTask(TaskManager taskManager) {
-        taskManager.displayTaskList();
+    public String runTask(TaskManager taskManager) {
+        return taskManager.displayTaskList();
     }
 }
