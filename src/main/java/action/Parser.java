@@ -84,15 +84,17 @@ public class Parser {
      */
     public static String[] parseTask(String input) throws TabbyExceptionInvalidCommand,
             TabbyExceptionIncompleteCommand {
-        if (validateInput(input)) {
+
+        String trimmed_input = input.trim();
+        if (validateInput(trimmed_input)) {
             throw new TabbyExceptionInvalidCommand();
         }
 
         if (input.equals("list")) {
-            return new String[]{input.trim()};
+            return new String[]{trimmed_input};
         }
 
-        String[] tokens = input.trim().split("\\s+", 2);
+        String[] tokens = trimmed_input.split("\\s+", 2);
 
         if (tokens.length < 2) {
             throw new TabbyExceptionIncompleteCommand();

@@ -55,7 +55,9 @@ public class AddAction extends Action {
     public String runTask(TaskManager taskManager) throws TabbyExceptionInvalidCommand,
             TabbyExceptionIncompleteCommand, TabbyExceptionInvalidTodo {
 
-        if (input.length < 2 || Parser.validateInput(input[1])) {
+        assert input.length >= 2;
+
+        if (Parser.validateInput(input[1])) {
             throw new TabbyExceptionIncompleteCommand();
         }
 
