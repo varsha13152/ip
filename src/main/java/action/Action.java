@@ -21,7 +21,8 @@ public abstract class Action {
         TODO,
         DEADLINE,
         EVENT,
-        FIND
+        FIND,
+        REMINDER
     }
 
     /**
@@ -52,6 +53,7 @@ public abstract class Action {
 
             return switch (command) {
             case LIST -> new ListAction();
+            case REMINDER -> new RemindAction();
             case FIND -> {
                 if (parsedTask.length < 2) {
                     throw new TabbyExceptionIncompleteCommand();

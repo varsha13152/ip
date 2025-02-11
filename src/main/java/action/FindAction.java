@@ -16,7 +16,7 @@ public class FindAction extends Action {
     }
 
     /**
-     * Executes the action to mark a task as done.
+     * Executes the action to find keyword
      *
      * @param taskManager The TaskManager to operate on.
      */

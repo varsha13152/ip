@@ -180,5 +180,27 @@ public class TaskManager {
         }
     }
 
+    public String remind() {
+        if (taskList.isEmpty()) {
+            return "There are no tasks in your list!";
+        }
+
+        StringBuilder taskListString = new StringBuilder();
+        int matchCount = 0;
+
+        for (int i = 0; i < taskList.size(); i++) {
+            Task task = taskList.get(i);
+            if (!task.getStatusIcon().equals("X") && !(task instanceof ToDo)) {
+                taskListString.append(++matchCount).append(". ").append(task).append("\n");
+            }
+        }
+
+        if (matchCount == 0) {
+            return "No matching tasks found!";
+        } else {
+            return "Here are upcoming deadlines/events in your list:\n" + taskListString.toString().trim();
+        }
+    }
+
 }
 
