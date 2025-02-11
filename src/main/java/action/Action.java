@@ -46,7 +46,8 @@ public abstract class Action {
         }
 
         try {
-            String[] parsedTask = Parser.parseTask(input);
+            String trimmed_input = input.trim();
+            String[] parsedTask = Parser.parseTask(trimmed_input);
             Command command = Command.valueOf(parsedTask[0].toUpperCase());
 
             return switch (command) {
