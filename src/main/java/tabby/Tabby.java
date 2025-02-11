@@ -1,8 +1,7 @@
 package tabby;
-import java.util.Scanner;
 
-import exceptions.TabbyException;
 import action.Action;
+import exceptions.TabbyException;
 import task.Storage;
 import task.TaskManager;
 
@@ -75,18 +74,4 @@ public class Tabby {
     public String goodbye() {
         return ui.display("Bye. Hope to see you again soon!");
     }
-
-
-//
-//    /**
-//     * The main method to start the chatbot.
-//     *
-//     * @param args Command-line arguments.
-//     */
-//    public static void main(String[] args) {
-//        Tabby tabby = new Tabby();
-//        tabby.getGreeting();
-//        tabby.readUserInput();
-//        tabby.goodbye();
-//    }
 }

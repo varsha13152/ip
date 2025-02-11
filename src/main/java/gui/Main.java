@@ -2,12 +2,13 @@ package gui;
 
 import java.io.IOException;
 
-import tabby.Tabby;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import tabby.Tabby;
+
 
 /**
  * The Main class is the entry point for the GUI application.

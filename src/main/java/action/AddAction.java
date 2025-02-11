@@ -1,16 +1,16 @@
 package action;
 
+import java.util.HashMap;
+
+import exceptions.TabbyExceptionInvalidCommand;
 import exceptions.TabbyExceptionInvalidDeadlineInput;
 import exceptions.TabbyExceptionInvalidEventInput;
 import exceptions.TabbyExceptionInvalidTodo;
-import exceptions.TabbyExceptionInvalidCommand;
-import exceptions.TabbyExceptionIncompleteCommand;
-import task.TaskManager;
-import task.Event;
-import task.Deadline;
-import task.ToDo;
 import tabby.Ui;
-import java.util.HashMap;
+import task.Deadline;
+import task.Event;
+import task.TaskManager;
+import task.ToDo;
 
 /**
  * This class processes user input to create appropriate task types and adds them to the task manager.
@@ -48,26 +48,23 @@ public class AddAction extends Action {
      * @param taskManager The TaskManager to operate on.
      * @return A message confirming the task addition or an error message.
      * @throws TabbyExceptionInvalidCommand if the input format is incorrect.
-     * @throws TabbyExceptionIncompleteCommand if the command lacks necessary details.
+     * @throws TabbyExceptionInvalidCommand if the command lacks necessary details.
      * @throws TabbyExceptionInvalidTodo if the ToDo task is invalid.
      */
     @Override
     public String runTask(TaskManager taskManager) throws TabbyExceptionInvalidCommand,
-            TabbyExceptionIncompleteCommand, TabbyExceptionInvalidTodo {
+            TabbyExceptionInvalidCommand, TabbyExceptionInvalidTodo {
 
-        if (input.length < 2 || Parser.validateInput(input[1])) {
-            throw new TabbyExceptionIncompleteCommand();
-        }
+        assert input.length >= 2;
 
-        Command command;
-        try {
-            command = Command.valueOf(input[0].toUpperCase());
-        } catch (IllegalArgumentException e) {
+        if (Parser.validateInput(input[1])) {
             throw new TabbyExceptionInvalidCommand();
         }
 
-        String taskDescription = input[1];
-        switch (command) {
+        try {
+            String taskDescription = input[1];
+            Command command = Command.valueOf(input[0].toUpperCase());
+            switch (command) {
             case TODO -> {
                 return addTodoTask(taskManager, taskDescription);
             }
@@ -78,6 +75,9 @@ public class AddAction extends Action {
                 return addEventTask(taskManager, taskDescription);
             }
             default -> throw new TabbyExceptionInvalidCommand();
+            }
+        } catch (IllegalArgumentException e) {
+            throw new TabbyExceptionInvalidCommand();
         }
     }
 
