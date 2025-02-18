@@ -54,7 +54,7 @@ public class TaskManager {
     public String deleteTask(int taskNumber) {
         try {
             if (taskNumber < 0 || taskNumber >= taskList.size()) {
-                throw new IndexOutOfBoundsException("Task number is out of range.");
+                throw new IndexOutOfBoundsException("= >_< = Error \n Task number is out of range.");
             }
 
             Task task = taskList.get(taskNumber);
@@ -62,10 +62,9 @@ public class TaskManager {
             storage.saveTasks(taskList);
             return taskResponse("deleted", task);
         } catch (IndexOutOfBoundsException e) {
-            return "Error: Unable to delete task. " + e.getMessage();
+            return "= >_< = Error \n Unable to delete task. " + e.getMessage();
         }
     }
-
 
     /**
      * Provides feedback to the user about a task-related action.
@@ -77,9 +76,9 @@ public class TaskManager {
     public String taskResponse(String command, Task task) {
         int noOfTasks = taskList.size();
         if (noOfTasks == 1) {
-            return String.format("Got it. I've %s this task:\n %s\nNow you have 1 task in the list", command, task);
+            return String.format("= ^_^ = Alrights. I've %s this task:\n %s\nNow you have 1 task in the list", command, task);
         } else {
-            return String.format("Got it. I've %s this task:\n %s\nNow you have %d tasks in the list", command, task, noOfTasks);
+            return String.format("= ^_^ = Alrights. I've %s this task:\n %s\nNow you have %d tasks in the list", command, task, noOfTasks);
         }
     }
 
@@ -98,9 +97,9 @@ public class TaskManager {
      */
     public String displayTaskList() {
         if (taskList.isEmpty()) {
-            return ui.display("No tasks in your list!");
+            return ui.display("= ^_^ = There are no tasks in your list!");
         } else {
-            StringBuilder taskListString = new StringBuilder("Here are the tasks in your list:\n");
+            StringBuilder taskListString = new StringBuilder("= ^_^ = Here are the tasks in your list:\n");
             for (int i = 0; i < taskList.size(); i++) {
                 taskListString.append(i + 1).append(". ").append(taskList.get(i)).append("\n");
             }
@@ -120,9 +119,9 @@ public class TaskManager {
             Task task = taskList.get(taskNumber);
             task.markAsDone();
             storage.saveTasks(taskList);
-            return String.format("Nice! I've marked this task as done:\n %s", task);
+            return String.format("= ^_^ = Solid! I've marked this task as done:\n %s", task);
         } else {
-            return "Invalid task number.";
+            return "= >_< =Error \n Invalid task number.";
         }
     }
 
@@ -137,9 +136,9 @@ public class TaskManager {
             Task task = taskList.get(taskNumber);
             task.markAsNotDone();
             storage.saveTasks(taskList);
-            return String.format("OK, I've marked this task as not done yet:\n %s", task);
+            return String.format("= ^_^ =\n Okais, I've marked this task as not done yet:\n %s", task);
         } else {
-            return "Invalid task number.";
+            return "= >_< = Error \n Invalid task number.";
         }
     }
 
@@ -160,7 +159,7 @@ public class TaskManager {
      */
     public String findTask(String keyword) {
         if (taskList.isEmpty()) {
-            return "There are no tasks in your list!";
+            return "= >_< = Error \n There are no tasks in your list!";
         }
 
         StringBuilder taskListString = new StringBuilder();
@@ -174,15 +173,15 @@ public class TaskManager {
         }
 
         if (matchCount == 0) {
-            return "No matching tasks found!";
+            return "= >_< = Error \n No matching tasks found!";
         } else {
-            return "Here are the matching tasks in your list:\n" + taskListString.toString().trim();
+            return "= ^_^ = Here are the matching tasks in your list:\n" + taskListString.toString().trim();
         }
     }
 
     public String remind() {
         if (taskList.isEmpty()) {
-            return "There are no tasks in your list!";
+            return "= >_< = Error \n There are no tasks in your list!";
         }
 
         StringBuilder taskListString = new StringBuilder();
@@ -196,9 +195,9 @@ public class TaskManager {
         }
 
         if (matchCount == 0) {
-            return "No matching tasks found!";
+            return "= >_< =Error \n No matching tasks found!";
         } else {
-            return "Here are upcoming deadlines/events in your list:\n" + taskListString.toString().trim();
+            return "= ^_^ = Here are upcoming deadlines/events in your list:\n" + taskListString.toString().trim();
         }
     }
 

@@ -17,7 +17,7 @@ public class Ui {
     }
 
     public String greeting() {
-        return String.format("Hello! I'm %s.\n What can I do for you?", CHATBOT);
+        return String.format("= ^o^ = Meow! \n  I'm %s.\n How may I assist you?", CHATBOT);
     }
 
     /**
@@ -26,7 +26,7 @@ public class Ui {
      * @param message The error message to be displayed.
      */
     public String error(String message) {
-        return String.format("Error!: \n %s", message);
+        return String.format("= >_< = Error! \n %s", message);
     }
 }
 
