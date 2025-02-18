@@ -47,7 +47,6 @@ public abstract class Action {
         }
 
         try {
-
             String[] parsedTask = Parser.parseTask(input);
             assert parsedTask.length > 0;
             Command command = Command.valueOf(parsedTask[0].toUpperCase());
