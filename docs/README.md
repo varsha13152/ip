@@ -36,35 +36,42 @@ java -jar tabby.jar
 
 ### Task Management
 
-* **Add To-Do**: Create a simple task
+* **Add To-Do**: Create a task
   ```sh
   todo <description>
   ```
+  Example: `todo go for a run`
+  
 
 * **Add Deadline**: Create a task with a due date
   ```sh
-  deadline <description> /by <date time>
+  deadline <description> /by <yyyy-MM-dd> <hhmm>
   ```
-
+  Example: `deadline return book /by 2/12/2019 1800`
+  
 * **Add Event**: Schedule an event with start and end times
   ```sh
-  event <description> /from <start> /to <end>
+  event <description> /from <yyyy-MM-dd> <hhmm> < /to <yyyy-MM-dd> <hhmm>
   ```
+  Example: `event project meeting /from 2/12/2019 1800 /to 2/12/2019 2000`
 
 * **Mark Task as Done**: Complete a task
   ```sh
   mark <task number>
   ```
-
+  Example: `mark 1`
+  
 * **Unmark Task**: Revert a task to incomplete status
   ```sh
   unmark <task number>
   ```
+  Example: `unmark 1`
 
 * **Delete Task**: Remove a task from your list
   ```sh
   delete <task number>
   ```
+  Example: `delete 1`
 
 ## Data Storage and Management
 
