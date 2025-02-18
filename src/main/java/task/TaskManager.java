@@ -54,7 +54,7 @@ public class TaskManager {
     public String deleteTask(int taskNumber) {
         try {
             if (taskNumber < 0 || taskNumber >= taskList.size()) {
-                throw new IndexOutOfBoundsException("= >_< = Error \n Task number is out of range.");
+                throw new IndexOutOfBoundsException("Task number is out of range.");
             }
 
             Task task = taskList.get(taskNumber);

@@ -1,5 +1,2 @@
+[T][X] say hi
 [D][X] return book (by: Dec 02 2019, 6:00 pm)
-[E][ ] project meeting (from: Dec 02 2019, 6:00 pm to: Dec 02 2019, 8:00 pm)
-[T][ ] hi
-[T][ ] bye
-[T][ ] hide
