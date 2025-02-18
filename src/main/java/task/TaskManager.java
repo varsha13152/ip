@@ -1,8 +1,8 @@
 package task;
 
-import tabby.Ui;
-
 import java.util.ArrayList;
+
+import tabby.Ui;
 
 /**
  * Manages a list of tasks, providing functionality to add, delete, mark as done, and display tasks.
@@ -76,9 +76,11 @@ public class TaskManager {
     public String taskResponse(String command, Task task) {
         int noOfTasks = taskList.size();
         if (noOfTasks == 1) {
-            return String.format("= ^_^ = Alrights. I've %s this task:\n %s\nNow you have 1 task in the list", command, task);
+            return String.format("= ^_^ = Alrights. I've %s this task:\n %s\nNow you have 1 task in the list",
+                    command, task);
         } else {
-            return String.format("= ^_^ = Alrights. I've %s this task:\n %s\nNow you have %d tasks in the list", command, task, noOfTasks);
+            return String.format("= ^_^ = Alrights. I've %s this task:\n %s\nNow you have %d tasks in the list",
+                    command, task, noOfTasks);
         }
     }
 
@@ -146,15 +148,6 @@ public class TaskManager {
      * Searches the task list for tasks containing the specified keyword and displays the matching tasks.
      *
      * @param keyword The keyword to search for within task descriptions.
-     *
-     * If the task list is empty, an error message is displayed indicating there are no tasks.
-     * If no matching tasks are found, an error message is displayed.
-     * Otherwise, the matching tasks are displayed in a formatted list.
-     */
-    /**
-     * Searches the task list for tasks containing the specified keyword and displays the matching tasks.
-     *
-     * @param keyword The keyword to search for within task descriptions.
      * @return A message containing the matching tasks or an error message.
      */
     public String findTask(String keyword) {
@@ -179,6 +172,11 @@ public class TaskManager {
         }
     }
 
+    /**
+     * Generates a reminder for upcoming deadlines and events in the task list.
+     *
+     * @return A string containing upcoming deadlines and events or an error message if no tasks are found.
+     */
     public String remind() {
         if (taskList.isEmpty()) {
             return "= >_< = Error \n There are no tasks in your list!";

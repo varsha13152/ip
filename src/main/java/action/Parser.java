@@ -1,17 +1,16 @@
 package action;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import exceptions.TabbyExceptionIncompleteCommand;
 import exceptions.TabbyExceptionInvalidCommand;
 import exceptions.TabbyExceptionInvalidDeadlineInput;
 import exceptions.TabbyExceptionInvalidEventInput;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.HashMap;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 /**
  * The Parser class is responsible for handling user and file input parsing.
@@ -85,16 +84,16 @@ public class Parser {
     public static String[] parseTask(String input) throws TabbyExceptionInvalidCommand,
             TabbyExceptionIncompleteCommand {
 
-        String trimmed_input = input.trim();
-        if (validateInput(trimmed_input)) {
+        String trimmedInput = input.trim();
+        if (validateInput(trimmedInput)) {
             throw new TabbyExceptionInvalidCommand();
         }
 
         if (input.equalsIgnoreCase("list") || input.equalsIgnoreCase("reminder")) {
-            return new String[]{trimmed_input};
+            return new String[]{trimmedInput};
         }
 
-        String[] tokens = trimmed_input.split("\\s+", 2);
+        String[] tokens = trimmedInput.split("\\s+", 2);
 
         if (tokens.length < 2) {
             throw new TabbyExceptionIncompleteCommand();

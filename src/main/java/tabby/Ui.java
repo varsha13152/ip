@@ -13,7 +13,7 @@ public class Ui {
      * @param message The message to be displayed.
      */
     public String display(String message) {
-       return message;
+        return message;
     }
 
     public String greeting() {

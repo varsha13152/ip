@@ -1,8 +1,7 @@
 package tabby;
-import java.util.Scanner;
 
-import exceptions.TabbyException;
 import action.Action;
+import exceptions.TabbyException;
 import task.Storage;
 import task.TaskManager;
 

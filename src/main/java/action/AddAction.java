@@ -1,16 +1,18 @@
 package action;
 
+import java.util.HashMap;
+
+import exceptions.TabbyExceptionIncompleteCommand;
+import exceptions.TabbyExceptionInvalidCommand;
 import exceptions.TabbyExceptionInvalidDeadlineInput;
 import exceptions.TabbyExceptionInvalidEventInput;
 import exceptions.TabbyExceptionInvalidTodo;
-import exceptions.TabbyExceptionInvalidCommand;
-import exceptions.TabbyExceptionIncompleteCommand;
-import task.TaskManager;
-import task.Event;
-import task.Deadline;
-import task.ToDo;
 import tabby.Ui;
-import java.util.HashMap;
+import task.Deadline;
+import task.Event;
+import task.TaskManager;
+import task.ToDo;
+
 
 /**
  * This class processes user input to create appropriate task types and adds them to the task manager.
@@ -64,12 +66,8 @@ public class AddAction extends Action {
         Command command;
         try {
             command = Command.valueOf(input[0].toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new TabbyExceptionInvalidCommand();
-        }
-
-        String taskDescription = input[1];
-        switch (command) {
+            String taskDescription = input[1];
+            switch (command) {
             case TODO -> {
                 return addTodoTask(taskManager, taskDescription);
             }
@@ -80,7 +78,12 @@ public class AddAction extends Action {
                 return addEventTask(taskManager, taskDescription);
             }
             default -> throw new TabbyExceptionInvalidCommand();
+            }
+        } catch (IllegalArgumentException e) {
+            throw new TabbyExceptionInvalidCommand();
         }
+
+
     }
 
     /**
