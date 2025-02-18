@@ -13,15 +13,31 @@
          xmlns="http://javafx.com/javafx/17"
          xmlns:fx="http://javafx.com/fxml/1"
          spacing="10">
+
     <children>
-        <Label fx:id="dialog" text="Label" wrapText="true" minHeight="-Infinity">
+        <!-- Chat Bubble -->
+        <Label fx:id="dialog"
+               text="Label"
+               wrapText="true"
+               maxWidth="250.0"
+               style="-fx-font-size: 14px; -fx-text-fill: black;
+                      -fx-background-color: #FFB5C0;
+                      -fx-background-radius: 10;
+                      -fx-padding: 10;">
             <padding>
-                <Insets left="10" right="10"/> <!-- Padding between text and image -->
+                <Insets left="10" right="10"/>
             </padding>
         </Label>
-        <ImageView fx:id="displayPicture" fitHeight="99.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true" />
+
+        <!-- Avatar -->
+        <ImageView fx:id="displayPicture"
+                   fitHeight="75.0"
+                   fitWidth="75.0"
+                   pickOnBounds="true"
+                   preserveRatio="true" />
     </children>
+
     <padding>
-        <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
+        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
     </padding>
 </fx:root>

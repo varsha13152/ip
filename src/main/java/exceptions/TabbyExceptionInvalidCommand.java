@@ -13,6 +13,6 @@ public class TabbyExceptionInvalidCommand extends TabbyException {
      * The error message specifies the list of valid commands available in the application.
      */
     public TabbyExceptionInvalidCommand() {
-        super("Invalid Command. Here are the valid commands: mark, unmark, delete, list, todo, event, deadline");
+        super("Invalid Command. Here are the valid commands: mark, unmark, delete, list, todo, event, deadline,reminder");
     }
 }
