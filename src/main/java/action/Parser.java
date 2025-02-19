@@ -20,7 +20,8 @@ public class Parser {
 
     // User input patterns
     private static final Pattern DEADLINE_USER_INPUT_PATTERN = Pattern.compile("(.+?)\\s*/by\\s*(.+)");
-    private static final Pattern EVENT_USER_INPUT_PATTERN = Pattern.compile("(.+?)\\s*/from\\s*(.+?)\\s*/to\\s*(.+)");
+    private static final Pattern EVENT_USER_INPUT_PATTERN =
+            Pattern.compile("(.+?)\\s*/from\\s*(.+?)\\s*/to\\s*(.+)");
 
     // File input patterns
     private static final Pattern DEADLINE_FILE_INPUT_PATTERN = Pattern.compile("(.+?)\\s*\\(by:\\s*(.+?)\\)");
