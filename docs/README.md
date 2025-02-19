@@ -81,4 +81,3 @@ Tabby manages your data with the following features:
 * Data storage in `tabby.txt` within the `data` folder
 * Automatic file creation if `tabby.txt` is missing
 * Manual editing support through any text editor (maintain file format to prevent corruption)
-```
