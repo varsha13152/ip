@@ -90,7 +90,7 @@ public class Parser {
             throw new TabbyExceptionInvalidCommand();
         }
 
-        if (input.equalsIgnoreCase("list") || input.equalsIgnoreCase("reminder")) {
+        if (trimmedInput.equalsIgnoreCase("list") || trimmedInput.equalsIgnoreCase("reminder")) {
             return new String[]{trimmedInput};
         }
 
