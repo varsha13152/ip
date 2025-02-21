@@ -116,12 +116,12 @@ public abstract class Action {
 
         try {
             return switch (command) {
-                case LIST -> new ListAction();
-                case REMINDER -> new RemindAction();
-                case FIND -> createFindAction(parsedTask);
-                case TODO, DEADLINE, EVENT -> createAddAction(parsedTask, isDone, isUserInput, ui);
-                case MARK, UNMARK, DELETE -> createTaskManagementAction(command, parsedTask);
-                default -> throw new TabbyExceptionInvalidCommand();
+            case LIST -> new ListAction();
+            case REMINDER -> new RemindAction();
+            case FIND -> createFindAction(parsedTask);
+            case TODO, DEADLINE, EVENT -> createAddAction(parsedTask, isDone, isUserInput, ui);
+            case MARK, UNMARK, DELETE -> createTaskManagementAction(command, parsedTask);
+            default -> throw new TabbyExceptionInvalidCommand();
             };
         } catch (IllegalArgumentException e) {
             throw new TabbyExceptionInvalidCommand();
@@ -184,15 +184,15 @@ public abstract class Action {
             throws TabbyExceptionInvalidTaskNumber, TabbyExceptionInvalidCommand {
 
         try {
-            validateTaskNumber(parsedTask);  // Ensure task number exists
-            int taskNumber = parseTaskNumber(parsedTask[1]);  // Parse the task number
-            validateTaskNumberRange(taskNumber);  // Ensure it's within a valid range
+            validateTaskNumber(parsedTask);
+            int taskNumber = parseTaskNumber(parsedTask[1]);
+            validateTaskNumberRange(taskNumber);
 
             return switch (command) {
-                case MARK -> new MarkAction(taskNumber);
-                case UNMARK -> new UnmarkAction(taskNumber);
-                case DELETE -> new DeleteAction(taskNumber);
-                default -> throw new TabbyExceptionInvalidCommand();
+            case MARK -> new MarkAction(taskNumber);
+            case UNMARK -> new UnmarkAction(taskNumber);
+            case DELETE -> new DeleteAction(taskNumber);
+            default -> throw new TabbyExceptionInvalidCommand();
             };
         } catch (IllegalArgumentException e) {
             throw new TabbyExceptionInvalidCommand();

@@ -16,6 +16,9 @@ public class Ui {
         return message;
     }
 
+    /**
+     * Displays a greeting message
+     */
     public String greeting() {
         return String.format("= ^o^ = Meow! \n  I'm %s.\n How may I assist you?", CHATBOT);
     }

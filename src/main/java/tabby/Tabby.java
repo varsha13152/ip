@@ -59,14 +59,6 @@ public class Tabby {
 
         return output.toString().trim();
     }
-    /**
-     * Echoes the user input.
-     *
-     * @param userInput The user input to echo.
-     */
-    private void echo(String userInput) {
-        ui.display(userInput);
-    }
 
     /**
      * Prints a goodbye message for the chatbot.
