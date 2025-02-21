@@ -48,13 +48,16 @@ java -jar tabby.jar
   deadline <description> /by <dd/MM/yyyy> <hhmm>
   ```
   Example: `deadline return book /by 2/12/2019 1800`
+
+  NOTE: You must input the flags in order as shown above (ie: description followed by '/by')
   
 * **Add Event**: Schedule an event with start and end times
   ```sh
   event <description> /from <dd/MM/yyyy> <hhmm> < /to <dd/MM/yyyy> <hhmm>
   ```
   Example: `event project meeting /from 2/12/2019 1800 /to 2/12/2019 2000`
-  NOTE: You must input the flags in order as shown above (ie: /from followed by /to)
+
+  NOTE: You must input the flags in order as shown above (ie: '/from' followed by '/to')
 
 * **Mark Task as Done**: Complete a task
   ```sh
