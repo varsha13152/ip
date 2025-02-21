@@ -13,8 +13,8 @@ public class TabbyExceptionInvalidTaskNumber extends TabbyException {
      * The error message provides guidance on how to retrieve existing tasks and correctly mark, unmark, or delete them.
      */
     public TabbyExceptionInvalidTaskNumber() {
-        super("Invalid Task Number. Please use 'list' to retrieve existing tasks. "
-                + "To mark or unmark a task please use: mark/unmark/delete <task number> ");
+        super("Invalid Task Number. Please use 'list' to retrieve existing tasks."
+                + "Use: mark/unmark/delete <task number>");
     }
 }
 
