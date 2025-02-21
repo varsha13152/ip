@@ -13,7 +13,7 @@ public class TabbyExceptionIncompleteCommand extends TabbyException {
                 + "  - Reminder\n"
                 + "  - Find <keyword>\n"
                 + "  - Mark: mark <task number>\n"
-                + "  - Unark: unmark <task number>\n"
+                + "  - Unmark: unmark <task number>\n"
                 + "  - Delete: delete <task number>\n"
                 + "  - Deadline: deadline <description> /by <dd/mm/yyyy> <hhmm> \n"
                 + "  - Event: event <description> /from <dd/mm/yyyy> <hhmm> /to <dd/mm/yyyy> <hhmm> \n"
