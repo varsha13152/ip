@@ -33,7 +33,7 @@ java -jar tabby.jar
   ```sh
   find <keyowrd>
   ```
-  Example:  Example: `find run`
+  Example: `find run`
 
 * **Exit Application**: Close Tabby
   ```sh
