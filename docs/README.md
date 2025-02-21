@@ -45,15 +45,17 @@ java -jar tabby.jar
 
 * **Add Deadline**: Create a task with a due date
   ```sh
-  deadline <description> /by <yyyy-MM-dd> <hhmm>
+  deadline <description> /by <dd/MM/yyyy> <hhmm>
   ```
   Example: `deadline return book /by 2/12/2019 1800`
   
 * **Add Event**: Schedule an event with start and end times
   ```sh
-  event <description> /from <yyyy-MM-dd> <hhmm> < /to <yyyy-MM-dd> <hhmm>
+  event <description> /from <dd/MM/yyyy> <hhmm> < /to <dd/MM/yyyy> <hhmm>
   ```
   Example: `event project meeting /from 2/12/2019 1800 /to 2/12/2019 2000`
+
+NOTE: You must input the flags in order as shown above (ie: /from followed by /to)
 
 * **Mark Task as Done**: Complete a task
   ```sh
