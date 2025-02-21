@@ -11,6 +11,7 @@ public class TabbyExceptionIncompleteCommand extends TabbyException {
         super("Invalid Command. Here are the valid commands & the respective formats:\n"
                 + "  - List\n"
                 + "  - Reminder\n"
+                + "  - Find <keyword>\n"
                 + "  - Mark: mark <task number>\n"
                 + "  - Unark: unmark <task number>\n"
                 + "  - Delete: delete <task number>\n"
