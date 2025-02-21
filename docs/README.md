@@ -24,7 +24,7 @@ java -jar tabby.jar
   list
   ```
 
-* **View Reminders**: Check upcoming deadlines and events
+* **View Reminders**: Check upcoming deadlines and events that are not marked complete
   ```sh
   reminder
   ```
