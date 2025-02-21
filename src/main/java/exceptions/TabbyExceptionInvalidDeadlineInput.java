@@ -13,6 +13,6 @@ public class TabbyExceptionInvalidDeadlineInput extends TabbyException {
      * The error message specifies the correct format for entering a deadline.
      */
     public TabbyExceptionInvalidDeadlineInput() {
-        super("Invalid deadline format. Use: deadline <description> /by <date time>");
+        super("Invalid deadline format. Use: deadline <description> /by <dd/mm/yyyy> <hhmm>");
     }
 }

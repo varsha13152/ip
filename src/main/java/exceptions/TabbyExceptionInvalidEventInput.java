@@ -13,6 +13,6 @@ public class TabbyExceptionInvalidEventInput extends TabbyException {
      * The error message specifies the correct format for entering an event task.
      */
     public TabbyExceptionInvalidEventInput() {
-        super("Invalid event format. Use: event <description> /from <start> /to <end>");
+        super("Invalid event format. Use: event <description> /from <dd/mm/yyyy> <hhmm> /to <dd/mm/yyyy> <hhmm>");
     }
 }

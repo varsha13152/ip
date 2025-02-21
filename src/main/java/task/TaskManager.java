@@ -54,7 +54,7 @@ public class TaskManager {
     public String deleteTask(int taskNumber) {
         try {
             if (taskNumber < 0 || taskNumber >= taskList.size()) {
-                throw new IndexOutOfBoundsException("Task number is out of range.");
+                throw new IndexOutOfBoundsException("Use 'list' command to view the available tasks");
             }
 
             Task task = taskList.get(taskNumber);
@@ -62,7 +62,7 @@ public class TaskManager {
             storage.saveTasks(taskList);
             return taskResponse("deleted", task);
         } catch (IndexOutOfBoundsException e) {
-            return "= >_< = Error \n Unable to delete task. " + e.getMessage();
+            return "= >_< = Error \n Task does not exist. " + e.getMessage();
         }
     }
 
@@ -193,7 +193,7 @@ public class TaskManager {
         }
 
         if (matchCount == 0) {
-            return "= >_< =Error \n No matching tasks found!";
+            return "= ^_^ = You have no upcoming deadlines/events!";
         } else {
             return "= ^_^ = Here are upcoming deadlines/events in your list:\n" + taskListString.toString().trim();
         }
