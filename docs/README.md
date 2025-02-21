@@ -29,6 +29,12 @@ java -jar tabby.jar
   reminder
   ```
 
+* **Find a Task**: Find a task using a keyword
+  ```sh
+  find <keyowrd>
+  ```
+  Example:  Example: `find run`
+
 * **Exit Application**: Close Tabby
   ```sh
   bye
