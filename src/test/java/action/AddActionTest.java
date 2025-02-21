@@ -48,7 +48,7 @@ public class AddActionTest {
         TaskManager taskManager = new TaskManager(storage, ui);
         taskManager.getTasks().clear();
 
-        String input = "deadline return book /by 2/12/2019 1800";
+        String input = "deadline return book /by 2/12/2025 1800";
         try {
             Action action = Action.userAction(input, false, true, ui);
             action.runTask(taskManager);
@@ -61,7 +61,7 @@ public class AddActionTest {
             output = task.toString();
         }
 
-        String expected = "[D][ ] return book (by: Dec 02 2019, 6:00 pm)";
+        String expected = "[D][ ] return book (by: Dec 02 2025, 6:00 pm)";
         assertEquals(expected, output);
     }
 
@@ -74,7 +74,7 @@ public class AddActionTest {
         TaskManager taskManager = new TaskManager(storage, ui);
         taskManager.getTasks().clear();
 
-        String input = "event project meeting /from 2/12/2019 1800 /to 2/12/2019 2000";
+        String input = "event project meeting /from 2/12/2025 1800 /to 2/12/2025 2000";
         try {
             Action action = Action.userAction(input, false, true, ui);
             action.runTask(taskManager);
@@ -87,7 +87,7 @@ public class AddActionTest {
             output = task.toString();
         }
 
-        String expected = "[E][ ] project meeting (from: Dec 02 2019, 6:00 pm to: Dec 02 2019, 8:00 pm)";
+        String expected = "[E][ ] project meeting (from: Dec 02 2025, 6:00 pm to: Dec 02 2025, 8:00 pm)";
         assertEquals(expected, output);
     }
 }

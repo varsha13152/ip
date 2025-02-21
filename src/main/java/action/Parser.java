@@ -128,6 +128,9 @@ public class Parser {
 
             if (isUserInput) {
                 LocalDateTime deadline = LocalDateTime.parse(dateTimeStr, USER_INPUT_FORMATTER);
+                if (!deadline.isAfter(LocalDateTime.now())) {
+                    throw new TabbyExceptionInvalidDeadlineInput();
+                }
                 deadlineDetails.put("by", deadline.format(OUTPUT_FORMATTER));
             } else {
                 deadlineDetails.put("by", dateTimeStr);
@@ -151,31 +154,30 @@ public class Parser {
             throws TabbyExceptionInvalidEventInput {
         Pattern pattern = isUserInput ? EVENT_USER_INPUT_PATTERN : EVENT_FILE_INPUT_PATTERN;
         Matcher matcher = pattern.matcher(input);
-
         if (!matcher.matches()) {
             throw new TabbyExceptionInvalidEventInput();
         }
-
         HashMap<String, String> eventDetails = new HashMap<>();
         String description = matcher.group(1).trim();
         String fromTimeStr = matcher.group(2).trim();
         String toTimeStr = matcher.group(3).trim();
-
         try {
             eventDetails.put("description", description);
-
             if (isUserInput) {
                 LocalDateTime fromTime = LocalDateTime.parse(fromTimeStr, USER_INPUT_FORMATTER);
                 LocalDateTime toTime = LocalDateTime.parse(toTimeStr, USER_INPUT_FORMATTER);
-
+                if (toTime.isBefore(fromTime) || !toTime.isAfter(LocalDateTime.now())
+                        || !fromTime.isAfter(LocalDateTime.now())) {
+                    throw new TabbyExceptionInvalidEventInput();
+                }
                 eventDetails.put("from", fromTime.format(OUTPUT_FORMATTER));
                 eventDetails.put("to", toTime.format(OUTPUT_FORMATTER));
             } else {
                 eventDetails.put("from", fromTimeStr);
                 eventDetails.put("to", toTimeStr);
             }
-
             return eventDetails;
+
         } catch (DateTimeParseException e) {
             throw new TabbyExceptionInvalidEventInput();
         }
