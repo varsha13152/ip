@@ -14,8 +14,8 @@ public class TabbyExceptionIncompleteCommand extends TabbyException {
                 + "  - Mark: mark <task number>\n"
                 + "  - Unark: unmark <task number>\n"
                 + "  - Delete: delete <task number>\n"
-                + "  - Deadline: deadline <description> /by <date time>\n"
-                + "  - Event: event <description> /from <start> /to <end>\n"
+                + "  - Deadline: deadline <description> /by <dd/mm/yyyy> <hhmm> \n"
+                + "  - Event: event <description> /from <dd/mm/yyyy> <hhmm> /to <dd/mm/yyyy> <hhmm> \n"
                 + "  - Todo: todo <description>");
     }
 }
