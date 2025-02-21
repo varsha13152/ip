@@ -56,10 +56,8 @@ java -jar tabby.jar
   Example: `deadline return book /by 2/12/2019 1800`
 
   NOTE:
-  <li>
-    <ul> You must input the flags in order as shown above (ie: description followed by '/by')</ul>
-    <ul> The /by date time must be set in the future</ul>
-  </li>
+      You must input the flags in order as shown above (ie: description followed by '/by') & /by date time must be set in the future
+    
   
 * **Add Event**: Schedule an event with start and end times
   ```sh
@@ -68,10 +66,8 @@ java -jar tabby.jar
   Example: `event project meeting /from 2/12/2019 1800 /to 2/12/2019 2000`
 
   NOTE:
-  <li>
-    <ul> You must input the flags in order as shown above (ie: '/from' followed by '/to')</ul>
-    <ul> The /from and /to date time must be set in the future 
-  </li>
+    You must input the flags in order as shown above (ie: '/from' followed by '/to') & /from and /to date time must be set in the future 
+   
 
 * **Mark Task as Done**: Complete a task
   ```sh
