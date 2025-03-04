@@ -53,7 +53,7 @@ java -jar tabby.jar
   ```sh
   deadline <description> /by <dd/MM/yyyy> <hhmm>
   ```
-  Example: `deadline return book /by 2/12/2019 1800`
+  Example: `deadline return book /by 2/12/2025 1800`
 
   NOTE:
       You must input the flags in order as shown above (ie: description followed by '/by') & /by date time must be set in the future
@@ -63,7 +63,7 @@ java -jar tabby.jar
   ```sh
   event <description> /from <dd/MM/yyyy> <hhmm> < /to <dd/MM/yyyy> <hhmm>
   ```
-  Example: `event project meeting /from 2/12/2019 1800 /to 2/12/2019 2000`
+  Example: `event project meeting /from 2/12/2025 1800 /to 2/12/2025 2000`
 
   NOTE:
     You must input the flags in order as shown above (ie: '/from' followed by '/to') & /from and /to date time must be set in the future 
